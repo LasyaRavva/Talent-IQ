@@ -16,6 +16,23 @@ const sessionSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    sessionType: {
+      type: String,
+      enum: ["cowork"],
+      default: "cowork",
+    },
+    maxMembers: {
+      type: Number,
+      min: 2,
+      max: 5,
+      default: 5,
+    },
+    participants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     participant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -30,6 +47,10 @@ const sessionSchema = new mongoose.Schema(
     callId: {
       type: String,
       default: "",
+    },
+    inviteCode: {
+      type: String,
+      default: null,
     },
   },
   { timestamps: true }

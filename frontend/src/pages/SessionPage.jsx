@@ -1,69 +1,100 @@
 import { useUser } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { useEndSession, useJoinSession, useSessionById } from "../hooks/useSessions";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
+import { Loader2Icon, LogOutIcon, PhoneOffIcon } from "lucide-react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import toast from "react-hot-toast";
+import CodeEditorPanel from "../components/CodeEditorPanel";
+import Navbar from "../components/Navbar";
+import OutputPanel from "../components/OutputPanel";
+import VideoCallUI from "../components/VideoCallUI";
 import { PROBLEMS } from "../data/problems";
 import { executeCode } from "../lib/piston";
-import Navbar from "../components/Navbar";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { getDifficultyBadgeClass } from "../lib/utils";
-import { Loader2Icon, LogOutIcon, PhoneOffIcon } from "lucide-react";
-import CodeEditorPanel from "../components/CodeEditorPanel";
-import OutputPanel from "../components/OutputPanel";
-
+import { getDifficultyBadgeClass, getSessionMemberStats, getSessionParticipants } from "../lib/utils";
+import { useEndSession, useJoinSession, useLeaveSession, useSessionById } from "../hooks/useSessions";
 import useStreamClient from "../hooks/useStreamClient";
-import { StreamCall, StreamVideo } from "@stream-io/video-react-sdk";
-import VideoCallUI from "../components/VideoCallUI";
 
 function SessionPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const { user } = useUser();
   const [output, setOutput] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
+  const attemptedJoinRef = useRef(null);
+  const stateLiveSession = location.state?.liveSession;
+  const storedLiveSession =
+    !id && typeof window !== "undefined"
+      ? (() => {
+          try {
+            const value = sessionStorage.getItem("liveSession");
+            return value ? JSON.parse(value) : null;
+          } catch {
+            return null;
+          }
+        })()
+      : null;
+  const liveSession = stateLiveSession || storedLiveSession;
 
   const { data: sessionData, isLoading: loadingSession, refetch } = useSessionById(id);
 
   const joinSessionMutation = useJoinSession();
   const endSessionMutation = useEndSession();
+  const leaveSessionMutation = useLeaveSession();
 
-  const session = sessionData?.session;
+  const session = sessionData?.session || liveSession;
   const isHost = session?.host?.clerkId === user?.id;
-  const isParticipant = session?.participant?.clerkId === user?.id;
+  const participants = getSessionParticipants(session);
+  const isParticipant =
+    session?.participant?.clerkId === user?.id ||
+    participants.some((member) => member?.clerkId === user?.id);
+  const { currentMembers, maxMembers } = getSessionMemberStats(session);
+  const roomCode = session?.inviteCode || id || "";
 
-  const { call, channel, chatClient, isInitializingCall, streamClient } = useStreamClient(
+  const { call, channel, chatClient, isInitializingCall, streamClient, callError } = useStreamClient(
     session,
     loadingSession,
     isHost,
     isParticipant
   );
 
-  // find the problem data based on session problem title
   const problemData = session?.problem
-    ? Object.values(PROBLEMS).find((p) => p.title === session.problem)
+    ? Object.values(PROBLEMS).find((problem) => problem.title === session.problem)
     : null;
 
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
   const [code, setCode] = useState(problemData?.starterCode?.[selectedLanguage] || "");
 
-  // auto-join session if user is not already a participant and not the host
   useEffect(() => {
+    if (!id) return;
     if (!session || !user || loadingSession) return;
     if (isHost || isParticipant) return;
+    if (joinSessionMutation.isPending) return;
+    if (attemptedJoinRef.current === id) return;
 
-    joinSessionMutation.mutate(id, { onSuccess: refetch });
+    attemptedJoinRef.current = id;
+    joinSessionMutation.mutate(id, {
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        attemptedJoinRef.current = null;
+      },
+    });
+  }, [session, user, loadingSession, isHost, isParticipant, id, refetch, joinSessionMutation]);
 
-    // remove the joinSessionMutation, refetch from dependencies to avoid infinite loop
-  }, [session, user, loadingSession, isHost, isParticipant, id]);
-
-  // redirect the "participant" when session ends
   useEffect(() => {
+    attemptedJoinRef.current = null;
+  }, [id, user?.id]);
+
+  useEffect(() => {
+    if (!id) return;
     if (!session || loadingSession) return;
 
     if (session.status === "completed") navigate("/dashboard");
-  }, [session, loadingSession, navigate]);
+  }, [session, loadingSession, navigate, id]);
 
-  // update code when problem loads or changes
   useEffect(() => {
     if (problemData?.starterCode?.[selectedLanguage]) {
       setCode(problemData.starterCode[selectedLanguage]);
@@ -73,7 +104,6 @@ function SessionPage() {
   const handleLanguageChange = (e) => {
     const newLang = e.target.value;
     setSelectedLanguage(newLang);
-    // use problem-specific starter code
     const starterCode = problemData?.starterCode?.[newLang] || "";
     setCode(starterCode);
     setOutput(null);
@@ -89,11 +119,67 @@ function SessionPage() {
   };
 
   const handleEndSession = () => {
+    const sessionId = id || session?._id || session?.id || session?.inviteCode;
+    if (!sessionId) {
+      toast.error("This session is missing its id. Please create a fresh session and try again.");
+      sessionStorage.removeItem("liveSession");
+      navigate("/dashboard");
+      return;
+    }
+
     if (confirm("Are you sure you want to end this session? All participants will be notified.")) {
-      // this will navigate the HOST to dashboard
-      endSessionMutation.mutate(id, { onSuccess: () => navigate("/dashboard") });
+      endSessionMutation.mutate(sessionId, {
+        onSuccess: () => {
+          sessionStorage.removeItem("liveSession");
+          navigate("/dashboard");
+        },
+      });
     }
   };
+
+  const handleLeaveSession = () => {
+    const sessionId = id || session?._id || session?.id || session?.inviteCode;
+    if (!sessionId) {
+      toast.error("This session is missing its id. Please rejoin from the dashboard.");
+      sessionStorage.removeItem("liveSession");
+      navigate("/dashboard");
+      return;
+    }
+
+    if (confirm("Are you sure you want to leave this session?")) {
+      leaveSessionMutation.mutate(sessionId, {
+        onSuccess: () => {
+          sessionStorage.removeItem("liveSession");
+          navigate("/dashboard");
+        },
+      });
+    }
+  };
+
+  const handleCopyRoomCode = async () => {
+    if (!roomCode) {
+      toast.error("Room code is not available");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(roomCode);
+      toast.success("Room code copied");
+    } catch {
+      toast.error("Unable to copy room code");
+    }
+  };
+
+  useEffect(() => {
+    if (!id) return;
+    sessionStorage.removeItem("liveSession");
+  }, [id]);
+
+  useEffect(() => {
+    if (id || !liveSession) return;
+
+    sessionStorage.setItem("liveSession", JSON.stringify(liveSession));
+  }, [id, liveSession]);
 
   return (
     <div className="h-screen bg-base-100 flex flex-col">
@@ -101,25 +187,22 @@ function SessionPage() {
 
       <div className="flex-1">
         <PanelGroup direction="horizontal">
-          {/* LEFT PANEL - CODE EDITOR & PROBLEM DETAILS */}
           <Panel defaultSize={50} minSize={30}>
             <PanelGroup direction="vertical">
-              {/* PROBLEM DSC PANEL */}
               <Panel defaultSize={50} minSize={20}>
                 <div className="h-full overflow-y-auto bg-base-200">
-                  {/* HEADER SECTION */}
                   <div className="p-6 bg-base-100 border-b border-base-300">
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <h1 className="text-3xl font-bold text-base-content">
-                          {session?.problem || "Loading..."}
+                          {session?.problem || "Session"}
                         </h1>
                         {problemData?.category && (
                           <p className="text-base-content/60 mt-1">{problemData.category}</p>
                         )}
                         <p className="text-base-content/60 mt-2">
                           Host: {session?.host?.name || "Loading..."} •{" "}
-                          {session?.participant ? 2 : 1}/2 participants
+                          {currentMembers}/{maxMembers} participants
                         </p>
                       </div>
 
@@ -129,8 +212,10 @@ function SessionPage() {
                             session?.difficulty
                           )}`}
                         >
-                          {session?.difficulty.slice(0, 1).toUpperCase() +
-                            session?.difficulty.slice(1) || "Easy"}
+                          {session?.difficulty
+                            ? session.difficulty.slice(0, 1).toUpperCase() +
+                              session.difficulty.slice(1)
+                            : "Easy"}
                         </span>
                         {isHost && session?.status === "active" && (
                           <button
@@ -146,6 +231,20 @@ function SessionPage() {
                             End Session
                           </button>
                         )}
+                        {!isHost && isParticipant && session?.status === "active" && (
+                          <button
+                            onClick={handleLeaveSession}
+                            disabled={leaveSessionMutation.isPending}
+                            className="btn btn-outline btn-sm gap-2"
+                          >
+                            {leaveSessionMutation.isPending ? (
+                              <Loader2Icon className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <LogOutIcon className="w-4 h-4" />
+                            )}
+                            Leave Session
+                          </button>
+                        )}
                         {session?.status === "completed" && (
                           <span className="badge badge-ghost badge-lg">Completed</span>
                         )}
@@ -154,7 +253,30 @@ function SessionPage() {
                   </div>
 
                   <div className="p-6 space-y-6">
-                    {/* problem desc */}
+                    {roomCode && (
+                      <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
+                        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                          <div>
+                            <h2 className="text-xl font-bold text-base-content">Room Code</h2>
+                            <p className="text-base-content/70 mt-1">
+                              Ask another signed-in user to enter this code from the dashboard.
+                            </p>
+                            <p className="text-sm text-base-content/70 mt-2">
+                              Code: <code>{roomCode}</code>
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={handleCopyRoomCode}
+                            className="btn btn-primary btn-sm"
+                          >
+                            Copy Room Code
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
                     {problemData?.description && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
                         <h2 className="text-xl font-bold mb-4 text-base-content">Description</h2>
@@ -169,11 +291,9 @@ function SessionPage() {
                       </div>
                     )}
 
-                    {/* examples section */}
-                    {problemData?.examples && problemData.examples.length > 0 && (
+                    {problemData?.examples?.length > 0 && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
                         <h2 className="text-xl font-bold mb-4 text-base-content">Examples</h2>
-
                         <div className="space-y-4">
                           {problemData.examples.map((example, idx) => (
                             <div key={idx}>
@@ -183,15 +303,11 @@ function SessionPage() {
                               </div>
                               <div className="bg-base-200 rounded-lg p-4 font-mono text-sm space-y-1.5">
                                 <div className="flex gap-2">
-                                  <span className="text-primary font-bold min-w-[70px]">
-                                    Input:
-                                  </span>
+                                  <span className="text-primary font-bold min-w-[70px]">Input:</span>
                                   <span>{example.input}</span>
                                 </div>
                                 <div className="flex gap-2">
-                                  <span className="text-secondary font-bold min-w-[70px]">
-                                    Output:
-                                  </span>
+                                  <span className="text-secondary font-bold min-w-[70px]">Output:</span>
                                   <span>{example.output}</span>
                                 </div>
                                 {example.explanation && (
@@ -209,8 +325,7 @@ function SessionPage() {
                       </div>
                     )}
 
-                    {/* Constraints */}
-                    {problemData?.constraints && problemData.constraints.length > 0 && (
+                    {problemData?.constraints?.length > 0 && (
                       <div className="bg-base-100 rounded-xl shadow-sm p-5 border border-base-300">
                         <h2 className="text-xl font-bold mb-4 text-base-content">Constraints</h2>
                         <ul className="space-y-2 text-base-content/90">
@@ -254,14 +369,13 @@ function SessionPage() {
 
           <PanelResizeHandle className="w-2 bg-base-300 hover:bg-primary transition-colors cursor-col-resize" />
 
-          {/* RIGHT PANEL - VIDEO CALLS & CHAT */}
           <Panel defaultSize={50} minSize={30}>
             <div className="h-full bg-base-200 p-4 overflow-auto">
               {isInitializingCall ? (
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center">
                     <Loader2Icon className="w-12 h-12 mx-auto animate-spin text-primary mb-4" />
-                    <p className="text-lg">Connecting to video call...</p>
+                    <p className="text-lg">Opening video session...</p>
                   </div>
                 </div>
               ) : !streamClient || !call ? (
@@ -272,7 +386,9 @@ function SessionPage() {
                         <PhoneOffIcon className="w-12 h-12 text-error" />
                       </div>
                       <h2 className="card-title text-2xl">Connection Failed</h2>
-                      <p className="text-base-content/70">Unable to connect to the video call</p>
+                      <p className="text-base-content/70">
+                        {callError || "Unable to connect to the video call"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -280,7 +396,11 @@ function SessionPage() {
                 <div className="h-full">
                   <StreamVideo client={streamClient}>
                     <StreamCall call={call}>
-                      <VideoCallUI chatClient={chatClient} channel={channel} />
+                      <VideoCallUI
+                        chatClient={chatClient}
+                        channel={channel}
+                        onLeave={isHost ? undefined : handleLeaveSession}
+                      />
                     </StreamCall>
                   </StreamVideo>
                 </div>

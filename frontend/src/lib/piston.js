@@ -1,6 +1,4 @@
-// Piston API is a service for code execution
-
-const PISTON_API = "https://emkc.org/api/v2/piston";
+import axiosInstance from "./axios";
 
 const LANGUAGE_VERSIONS = {
   javascript: { language: "javascript", version: "18.15.0" },
@@ -24,12 +22,7 @@ export async function executeCode(language, code) {
       };
     }
 
-    const response = await fetch(`${PISTON_API}/execute`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    const response = await axiosInstance.post("/api/code/execute", {
         language: languageConfig.language,
         version: languageConfig.version,
         files: [
@@ -38,37 +31,16 @@ export async function executeCode(language, code) {
             content: code,
           },
         ],
-      }),
     });
 
-    if (!response.ok) {
-      return {
-        success: false,
-        error: `HTTP error! status: ${response.status}`,
-      };
-    }
-
-    const data = await response.json();
-
-    const output = data.run.output || "";
-    const stderr = data.run.stderr || "";
-
-    if (stderr) {
-      return {
-        success: false,
-        output: output,
-        error: stderr,
-      };
-    }
-
-    return {
-      success: true,
-      output: output || "No output",
-    };
+    return response.data;
   } catch (error) {
+    const status = error?.response?.status;
+    const message = error?.response?.data?.error || error?.response?.data?.message || error.message;
+
     return {
       success: false,
-      error: `Failed to execute code: ${error.message}`,
+      error: status ? `HTTP error! status: ${status}. ${message}` : `Failed to execute code: ${message}`,
     };
   }
 }

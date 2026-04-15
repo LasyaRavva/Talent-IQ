@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { useUser } from "@clerk/clerk-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useActiveSessions, useCreateSession, useMyRecentSessions } from "../hooks/useSessions";
 
 import Navbar from "../components/Navbar";
@@ -15,45 +16,94 @@ function DashboardPage() {
   const { user } = useUser();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [roomConfig, setRoomConfig] = useState({ problem: "", difficulty: "" });
+  const [joinCode, setJoinCode] = useState("");
 
   const createSessionMutation = useCreateSession();
 
   const { data: activeSessionsData, isLoading: loadingActiveSessions } = useActiveSessions();
   const { data: recentSessionsData, isLoading: loadingRecentSessions } = useMyRecentSessions();
 
-  const handleCreateRoom = () => {
+  const handleCreateRoom = async () => {
     if (!roomConfig.problem || !roomConfig.difficulty) return;
 
-    createSessionMutation.mutate(
-      {
+    try {
+      const clientCallId = `session_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+      const createdSessionResponse = await createSessionMutation.mutateAsync({
         problem: roomConfig.problem,
         difficulty: roomConfig.difficulty.toLowerCase(),
-      },
-      {
-        onSuccess: (data) => {
-          setShowCreateModal(false);
-          navigate(`/session/${data.session._id}`);
+        callId: clientCallId,
+      });
+
+      const createdSession = createdSessionResponse?.session || {};
+      const sessionId = createdSessionResponse?.sessionId || createdSession?._id || createdSession?.id || null;
+      const sessionRouteId = createdSession?.inviteCode || sessionId;
+
+      const liveSession = {
+        _id: sessionId,
+        id: sessionId,
+        problem: roomConfig.problem,
+        difficulty: roomConfig.difficulty.toLowerCase(),
+        callId: createdSession?.callId || clientCallId,
+        inviteCode: createdSession?.inviteCode || null,
+        status: createdSession?.status || "active",
+        host: {
+          clerkId: user?.id,
+          name: user?.fullName || user?.username || user?.primaryEmailAddress?.emailAddress || "Host",
+          profileImage: user?.imageUrl || "",
         },
-      }
-    );
+        participants: createdSession?.participants || [],
+        maxMembers: createdSession?.maxMembers || 5,
+      };
+
+      sessionStorage.setItem("liveSession", JSON.stringify(liveSession));
+      setShowCreateModal(false);
+      navigate(sessionRouteId ? `/session/${sessionRouteId}` : "/session/live", {
+        state: sessionRouteId
+          ? undefined
+          : {
+              liveSession,
+            },
+      });
+    } catch {
+      // The mutation hook already shows the error toast.
+    }
+  };
+
+  const handleJoinByCode = () => {
+    const normalizedCode = joinCode.trim();
+
+    if (!normalizedCode) {
+      toast.error("Enter a room code to join");
+      return;
+    }
+
+    navigate(`/session/${normalizedCode}`);
   };
 
   const activeSessions = activeSessionsData?.sessions || [];
   const recentSessions = recentSessionsData?.sessions || [];
 
   const isUserInSession = (session) => {
-    if (!user.id) return false;
+    if (!user?.id) return false;
 
-    return session.host?.clerkId === user.id || session.participant?.clerkId === user.id;
+    const participants = Array.isArray(session.participants) ? session.participants : [];
+    const inParticipants = participants.some((member) => member?.clerkId === user.id);
+
+    return session.host?.clerkId === user.id || session.participant?.clerkId === user.id || inParticipants;
   };
 
   return (
     <>
       <div className="min-h-screen bg-base-300">
         <Navbar />
-        <WelcomeSection onCreateSession={() => setShowCreateModal(true)} />
+        <WelcomeSection
+          onCreateSession={() => setShowCreateModal(true)}
+          joinCode={joinCode}
+          onJoinCodeChange={setJoinCode}
+          onJoinByCode={handleJoinByCode}
+        />
 
-        {/* Grid layout */}
         <div className="container mx-auto px-6 pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <StatsCards
