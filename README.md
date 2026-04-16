@@ -44,6 +44,10 @@ CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
 
 CLIENT_URL=http://localhost:5173
+
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_MODEL=llama3.1:8b
 ```
 
 ### Frontend (`/frontend`)
@@ -66,6 +70,37 @@ cd backend
 npm install
 npm run dev
 ```
+
+### Local AI With Ollama
+
+Install Ollama, pull a model, and keep the Ollama server running:
+
+```bash
+ollama pull llama3.1:8b
+ollama serve
+```
+
+With `AI_PROVIDER=ollama`, the AI coach and interview features stream from your local model instead of OpenAI or Gemini.
+
+### AI Video Avatar With Simli
+
+To add a real AI video avatar without changing the human Stream call, configure these backend variables:
+
+```bash
+SIMLI_API_KEY=your_simli_api_key
+SIMLI_FACE_ID=your_simli_face_id
+SIMLI_MAX_SESSION_LENGTH=1800
+SIMLI_MAX_IDLE_TIME=300
+```
+
+Then install the frontend client dependency:
+
+```bash
+cd frontend
+npm install
+```
+
+The live session AI panel will request a backend-created Simli session token and render the avatar as a separate AI participant tile.
 
 ---
 

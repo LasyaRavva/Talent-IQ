@@ -394,16 +394,16 @@ function SessionPage() {
                 </div>
               ) : (
                 <div className="h-full">
-                  <StreamVideo client={streamClient}>
-                    <StreamCall call={call}>
-                      <VideoCallUI
-                        chatClient={chatClient}
-                        channel={channel}
-                        onLeave={isHost ? undefined : handleLeaveSession}
-                      />
-                    </StreamCall>
-                  </StreamVideo>
-                </div>
+                    <StreamVideo client={streamClient}>
+                      <StreamCall call={call}>
+                        <VideoCallUI
+                          chatClient={chatClient}
+                          channel={channel}
+                          onLeave={isHost ? undefined : handleLeaveSession}
+                        />
+                      </StreamCall>
+                    </StreamVideo>
+                  </div>
               )}
             </div>
           </Panel>

@@ -17,21 +17,23 @@ const buildApiUrl = (path) => {
 };
 
 export const aiApi = {
-  askCoach: async ({ messages, mode, topic, difficulty }) => {
+  askCoach: async ({ messages, mode, topic, difficulty, allowLocalFallback = false }) => {
     const response = await axiosInstance.post("/api/ai/coach", {
       messages,
       mode,
       topic,
       difficulty,
+      allowLocalFallback,
     });
 
     return response.data;
   },
-  askCoachStream: async ({ messages, mode, topic, difficulty, onEvent }) => {
+  askCoachStream: async ({ messages, mode, topic, difficulty, allowLocalFallback = false, onEvent, signal }) => {
     const headers = await getAuthRequestHeaders();
     const response = await fetch(buildApiUrl("/api/ai/coach/stream"), {
       method: "POST",
       credentials: "include",
+      signal,
       headers: {
         "Content-Type": "application/json",
         ...headers,
@@ -41,6 +43,7 @@ export const aiApi = {
         mode,
         topic,
         difficulty,
+        allowLocalFallback,
       }),
     });
 
@@ -59,33 +62,49 @@ export const aiApi = {
     const decoder = new TextDecoder();
     let buffer = "";
 
-    while (true) {
-      const { value, done } = await reader.read();
-      buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
 
-      const lines = buffer.split(/\r?\n/);
-      buffer = lines.pop() || "";
+        const lines = buffer.split(/\r?\n/);
+        buffer = lines.pop() || "";
 
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) continue;
-        const event = JSON.parse(trimmed);
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed) continue;
+          const event = JSON.parse(trimmed);
+          onEvent?.(event);
+
+          if (event.type === "error") {
+            throw new Error(event.message || "Failed to stream AI response");
+          }
+        }
+
+        if (done) break;
+      }
+
+      if (buffer.trim()) {
+        const event = JSON.parse(buffer.trim());
         onEvent?.(event);
-
         if (event.type === "error") {
           throw new Error(event.message || "Failed to stream AI response");
         }
       }
-
-      if (done) break;
+    } finally {
+      reader.releaseLock();
     }
+  },
+  createAvatarSession: async () => {
+    const response = await axiosInstance.post("/api/ai/avatar/session");
+    return response.data;
+  },
+  transcribeAudio: async ({ audioBase64, mimeType }) => {
+    const response = await axiosInstance.post("/api/ai/transcribe", {
+      audioBase64,
+      mimeType,
+    });
 
-    if (buffer.trim()) {
-      const event = JSON.parse(buffer.trim());
-      onEvent?.(event);
-      if (event.type === "error") {
-        throw new Error(event.message || "Failed to stream AI response");
-      }
-    }
+    return response.data;
   },
 };

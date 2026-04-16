@@ -20,7 +20,7 @@ const devOriginRegex = /^http:\/\/localhost:\d+$/;
 const allowedOrigins = [ENV.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"];
 
 // middleware
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 // credentials:true meaning?? => server allows a browser to include cookies on request
 app.use(
   cors({

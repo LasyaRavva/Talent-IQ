@@ -10,6 +10,8 @@ import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
 import AiCoachPage from "./pages/AiCoachPage";
+import ServicesPage from "./pages/ServicesPage";
+import HelpChatWidget from "./components/HelpChatWidget";
 import { setAuthTokenGetter, setAuthUserGetter } from "./lib/axios";
 
 function RootRoute({ isSignedIn }) {
@@ -83,6 +85,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<RootRoute isSignedIn={isSignedIn} />} />
+        <Route path="/services" element={<ServicesPage />} />
         <Route
           path="/dashboard"
           element={
@@ -134,6 +137,7 @@ function App() {
         />
       </Routes>
 
+      <HelpChatWidget />
       <Toaster toastOptions={{ duration: 3000 }} />
     </>
   );

@@ -12,7 +12,7 @@ import { Channel, Chat, MessageInput, MessageList, Thread, Window } from "stream
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import "stream-chat-react/dist/css/v2/index.css";
 
-function VideoCallUI({ chatClient, channel, onLeave }) {
+function VideoCallUI({ chatClient, channel, onLeave, aiParticipant }) {
   const navigate = useNavigate();
   const { useCallCallingState, useParticipantCount } = useCallStateHooks();
   const callingState = useCallCallingState();
@@ -53,8 +53,13 @@ function VideoCallUI({ chatClient, channel, onLeave }) {
           )}
         </div>
 
-        <div className="flex-1 bg-base-300 rounded-lg overflow-hidden relative">
-          <SpeakerLayout />
+        <div className={`flex-1 ${aiParticipant ? "grid gap-3 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,0.9fr)]" : ""}`}>
+          <div className="bg-base-300 rounded-lg overflow-hidden relative min-h-[420px] h-full">
+            <SpeakerLayout />
+          </div>
+          {aiParticipant ? (
+            <div className="min-h-[420px]">{aiParticipant}</div>
+          ) : null}
         </div>
 
         <div className="bg-base-100 p-3 rounded-lg shadow flex justify-center">

@@ -3,6 +3,8 @@ import { ENV } from "./env.js";
 const DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1";
 const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 const DEFAULT_GEMINI_MODEL = "gemini-2.0-flash";
+const DEFAULT_OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+const DEFAULT_OLLAMA_MODEL = "llama3.1:8b";
 
 const resolveGeminiModel = (requestedModel) => {
   const model = (requestedModel || DEFAULT_GEMINI_MODEL).trim();
@@ -93,6 +95,8 @@ const extractGeminiText = (data) =>
     ?.flatMap((candidate) => candidate?.content?.parts || [])
     ?.map((part) => (typeof part?.text === "string" ? part.text : ""))
     .join("") || "";
+
+const extractOllamaDelta = (data) => data?.message?.content || "";
 
 const getLastUserMessage = (messages) => [...messages].reverse().find((m) => m.role === "user")?.content || "";
 
@@ -200,7 +204,35 @@ function mentionsAlgorithm(text) {
 
 const normalizeText = (value) => value.toLowerCase().replace(/\s+/g, " ").trim();
 
-const hasExternalAiConfigured = () => Boolean(ENV.GEMINI_API_KEY || ENV.OPENAI_API_KEY);
+const PLACEHOLDER_ENV_PATTERNS = [
+  /^your[_-]/i,
+  /your .* api key/i,
+  /^placeholder$/i,
+  /^changeme$/i,
+];
+
+const hasUsableValue = (value) => {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  return !PLACEHOLDER_ENV_PATTERNS.some((pattern) => pattern.test(trimmed));
+};
+
+const hasUsableOpenAiKey = () => hasUsableValue(ENV.OPENAI_API_KEY);
+const hasUsableGeminiKey = () => hasUsableValue(ENV.GEMINI_API_KEY);
+const hasOllamaConfigured = () => hasUsableValue(ENV.OLLAMA_BASE_URL || DEFAULT_OLLAMA_BASE_URL) && hasUsableValue(ENV.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL);
+const hasExternalAiConfigured = () => Boolean(hasUsableGeminiKey() || hasUsableOpenAiKey() || hasOllamaConfigured());
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const isQuotaError = (message = "") => /quota|rate limit|billing details|free_tier_requests|free_tier_input_token_count/i.test(message);
+
+const streamLocalReplyChunks = async function* ({ reply, provider, model }) {
+  const chunks = reply.match(/.{1,24}(\s|$)|\S+/g) || [reply];
+
+  for (const chunk of chunks) {
+    await sleep(70);
+    yield { type: "delta", content: chunk, provider, model };
+  }
+};
 
 const makeReplyNonRepeating = (reply, messages, mode) => {
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant")?.content;
@@ -217,7 +249,7 @@ const makeReplyNonRepeating = (reply, messages, mode) => {
   return `${reply}${suffix}`;
 };
 
-const callOpenAI = async ({ messages, systemPrompt }) => {
+const callOpenAI = async ({ messages, systemPrompt, signal }) => {
   const apiKey = ENV.OPENAI_API_KEY;
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -236,6 +268,7 @@ const callOpenAI = async ({ messages, systemPrompt }) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
+    signal,
     body: JSON.stringify(payload),
   });
 
@@ -250,7 +283,7 @@ const callOpenAI = async ({ messages, systemPrompt }) => {
   return { reply, model, provider: "openai" };
 };
 
-const streamOpenAI = async function* ({ messages, systemPrompt }) {
+const streamOpenAI = async function* ({ messages, systemPrompt, signal }) {
   const apiKey = ENV.OPENAI_API_KEY;
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -270,6 +303,7 @@ const streamOpenAI = async function* ({ messages, systemPrompt }) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
+    signal,
     body: JSON.stringify(payload),
   });
 
@@ -342,7 +376,7 @@ const toGeminiContents = (messages) => {
   }));
 };
 
-const callGemini = async ({ messages, systemPrompt }) => {
+const callGemini = async ({ messages, systemPrompt, signal }) => {
   const apiKey = ENV.GEMINI_API_KEY;
   if (!apiKey) throw new Error("Missing GEMINI_API_KEY");
 
@@ -361,6 +395,7 @@ const callGemini = async ({ messages, systemPrompt }) => {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    signal,
     body: JSON.stringify(payload),
   });
 
@@ -375,7 +410,37 @@ const callGemini = async ({ messages, systemPrompt }) => {
   return { reply, model, provider: "gemini" };
 };
 
-const streamGemini = async function* ({ messages, systemPrompt }) {
+const callOllama = async ({ messages, systemPrompt, signal }) => {
+  const baseUrl = (ENV.OLLAMA_BASE_URL || DEFAULT_OLLAMA_BASE_URL).replace(/\/$/, "");
+  const model = ENV.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL;
+
+  const response = await fetch(`${baseUrl}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    signal,
+    body: JSON.stringify({
+      model,
+      stream: false,
+      messages: [{ role: "system", content: systemPrompt }, ...messages],
+    }),
+  });
+
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {}
+
+  if (!response.ok) {
+    throw new Error(data?.error || "Ollama request failed");
+  }
+
+  const reply = data?.message?.content?.trim();
+  if (!reply) throw new Error("Ollama returned an empty response");
+
+  return { reply, model, provider: "ollama" };
+};
+
+const streamGemini = async function* ({ messages, systemPrompt, signal }) {
   const apiKey = ENV.GEMINI_API_KEY;
   if (!apiKey) throw new Error("Missing GEMINI_API_KEY");
 
@@ -394,6 +459,7 @@ const streamGemini = async function* ({ messages, systemPrompt }) {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    signal,
     body: JSON.stringify(payload),
   });
 
@@ -464,14 +530,89 @@ const streamGemini = async function* ({ messages, systemPrompt }) {
   yield { type: "done", reply: assembled, provider: "gemini", model };
 };
 
-export const generateAiReply = async ({ mode, topic, difficulty, messages }) => {
+const streamOllama = async function* ({ messages, systemPrompt, signal }) {
+  const baseUrl = (ENV.OLLAMA_BASE_URL || DEFAULT_OLLAMA_BASE_URL).replace(/\/$/, "");
+  const model = ENV.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL;
+
+  const response = await fetch(`${baseUrl}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    signal,
+    body: JSON.stringify({
+      model,
+      stream: true,
+      messages: [{ role: "system", content: systemPrompt }, ...messages],
+    }),
+  });
+
+  if (!response.ok || !response.body) {
+    let message = "Ollama stream request failed";
+    try {
+      const data = await response.json();
+      message = data?.error || message;
+    } catch {}
+    throw new Error(message);
+  }
+
+  yield { type: "meta", provider: "ollama", model };
+
+  const lineDecoder = createLineDecoder();
+  let assembled = "";
+
+  for await (const chunk of response.body) {
+    const lines = lineDecoder.push(chunk);
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line) continue;
+
+      let data;
+      try {
+        data = JSON.parse(line);
+      } catch {
+        continue;
+      }
+
+      const delta = extractOllamaDelta(data);
+      if (delta) {
+        assembled += delta;
+        yield { type: "delta", content: delta, provider: "ollama", model };
+      }
+
+      if (data?.done) {
+        yield { type: "done", reply: assembled, provider: "ollama", model };
+        return;
+      }
+    }
+  }
+
+  for (const rawLine of lineDecoder.flush()) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    try {
+      const data = JSON.parse(line);
+      const delta = extractOllamaDelta(data);
+      if (delta) {
+        assembled += delta;
+        yield { type: "delta", content: delta, provider: "ollama", model };
+      }
+    } catch {}
+  }
+
+  if (!assembled) throw new Error("Ollama returned an empty response");
+  yield { type: "done", reply: assembled, provider: "ollama", model };
+};
+
+export const generateAiReply = async ({ mode, topic, difficulty, messages, allowLocalFallback = false, signal }) => {
   const safeMessages = sanitizeMessages(messages);
   if (!safeMessages.length) throw new Error("At least one user message is required");
 
   const normalizedMode = mode === "interview" ? "interview" : "coach";
   const systemPrompt = buildSystemPrompt(normalizedMode, topic, difficulty);
-  const preferredProvider = (ENV.AI_PROVIDER || "gemini").toLowerCase();
+  const preferredProvider = (ENV.AI_PROVIDER || (hasOllamaConfigured() ? "ollama" : "gemini")).toLowerCase();
   const externalAiConfigured = hasExternalAiConfigured();
+  const cloudProviderConfigured = hasUsableGeminiKey() || hasUsableOpenAiKey();
 
   if (preferredProvider === "local" || !externalAiConfigured) {
     const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
@@ -482,38 +623,72 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages }) => 
   }
 
   const attempts =
-    preferredProvider === "openai"
-      ? ["openai", "gemini"]
-      : ["gemini", "openai"];
+    preferredProvider === "ollama"
+      ? ["ollama", "gemini", "openai"]
+      : preferredProvider === "openai"
+        ? ["openai", "gemini", "ollama"]
+        : ["gemini", "openai", "ollama"];
   const errors = [];
 
   for (const provider of attempts) {
     try {
-      if (provider === "gemini" && ENV.GEMINI_API_KEY) {
-        const result = await callGemini({ messages: safeMessages, systemPrompt });
+      if (provider === "ollama" && hasOllamaConfigured()) {
+        const result = await callOllama({ messages: safeMessages, systemPrompt, signal });
         return {
           ...result,
           reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
         };
       }
 
-      if (provider === "openai" && ENV.OPENAI_API_KEY) {
-        const result = await callOpenAI({ messages: safeMessages, systemPrompt });
+      if (provider === "gemini" && hasUsableGeminiKey()) {
+        const result = await callGemini({ messages: safeMessages, systemPrompt, signal });
+        return {
+          ...result,
+          reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
+        };
+      }
+
+      if (provider === "openai" && hasUsableOpenAiKey()) {
+        const result = await callOpenAI({ messages: safeMessages, systemPrompt, signal });
         return {
           ...result,
           reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
         };
       }
     } catch (error) {
+      if (error.name === "AbortError") {
+        throw error;
+      }
+
       errors.push(`${provider}: ${error.message}`);
-      console.warn(`${provider} provider failed:`, error.message);
+      if (!allowLocalFallback || !isQuotaError(error.message)) {
+        console.warn(`${provider} provider failed:`, error.message);
+      }
     }
   }
 
+  if (!cloudProviderConfigured) {
+    const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
+    return {
+      ...local,
+      reply: makeReplyNonRepeating(local.reply, safeMessages, normalizedMode),
+      warnings: errors,
+    };
+  }
+
   if (externalAiConfigured) {
+    if (allowLocalFallback) {
+      const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
+      return {
+        ...local,
+        reply: makeReplyNonRepeating(local.reply, safeMessages, normalizedMode),
+        warnings: errors,
+      };
+    }
+
     throw new Error(
       errors.length
-        ? `External AI request failed. ${errors.join(" | ")}`
+        ? `External AI request failed. ${errors.join(" | ")}` 
         : "External AI request failed. No working provider is available."
     );
   }
@@ -525,42 +700,50 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages }) => 
   };
 };
 
-export const streamAiReply = async function* ({ mode, topic, difficulty, messages }) {
+export const streamAiReply = async function* ({ mode, topic, difficulty, messages, allowLocalFallback = false, signal }) {
   const safeMessages = sanitizeMessages(messages);
   if (!safeMessages.length) throw new Error("At least one user message is required");
 
   const normalizedMode = mode === "interview" ? "interview" : "coach";
   const systemPrompt = buildSystemPrompt(normalizedMode, topic, difficulty);
-  const preferredProvider = (ENV.AI_PROVIDER || "gemini").toLowerCase();
+  const preferredProvider = (ENV.AI_PROVIDER || (hasOllamaConfigured() ? "ollama" : "gemini")).toLowerCase();
   const externalAiConfigured = hasExternalAiConfigured();
+  const cloudProviderConfigured = hasUsableGeminiKey() || hasUsableOpenAiKey();
 
   if (preferredProvider === "local" || !externalAiConfigured) {
     const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
     const reply = makeReplyNonRepeating(local.reply, safeMessages, normalizedMode);
     yield { type: "meta", provider: local.provider, model: local.model };
-    for (const part of reply.split(/(\s+)/).filter(Boolean)) {
-      yield { type: "delta", content: part, provider: local.provider, model: local.model };
+    for await (const event of streamLocalReplyChunks(reply ? { reply, provider: local.provider, model: local.model } : { reply: "", provider: local.provider, model: local.model })) {
+      yield event;
     }
     yield { type: "done", reply, provider: local.provider, model: local.model };
     return;
   }
 
-  const attempts = preferredProvider === "openai" ? ["openai", "gemini"] : ["gemini", "openai"];
+  const attempts =
+    preferredProvider === "ollama"
+      ? ["ollama", "gemini", "openai"]
+      : preferredProvider === "openai"
+        ? ["openai", "gemini", "ollama"]
+        : ["gemini", "openai", "ollama"];
   const errors = [];
 
   for (const provider of attempts) {
     try {
       const streamer =
-        provider === "gemini" && ENV.GEMINI_API_KEY
+        provider === "ollama" && hasOllamaConfigured()
+          ? streamOllama
+          : provider === "gemini" && hasUsableGeminiKey()
           ? streamGemini
-          : provider === "openai" && ENV.OPENAI_API_KEY
+          : provider === "openai" && hasUsableOpenAiKey()
             ? streamOpenAI
             : null;
 
       if (!streamer) continue;
 
       let finalReply = "";
-      for await (const event of streamer({ messages: safeMessages, systemPrompt })) {
+      for await (const event of streamer({ messages: safeMessages, systemPrompt, signal })) {
         if (event.type === "done") {
           finalReply = event.reply || finalReply;
           const reply = makeReplyNonRepeating(finalReply, safeMessages, normalizedMode);
@@ -583,12 +766,52 @@ export const streamAiReply = async function* ({ mode, topic, difficulty, message
 
       return;
     } catch (error) {
+      if (error.name === "AbortError") {
+        throw error;
+      }
+
       errors.push(`${provider}: ${error.message}`);
-      console.warn(`${provider} stream provider failed:`, error.message);
+      if (!allowLocalFallback || !isQuotaError(error.message)) {
+        console.warn(`${provider} stream provider failed:`, error.message);
+      }
     }
   }
 
+  if (!cloudProviderConfigured) {
+    const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
+    const reply = makeReplyNonRepeating(local.reply, safeMessages, normalizedMode);
+    yield { type: "meta", provider: local.provider, model: local.model };
+    for await (const event of streamLocalReplyChunks({ reply, provider: local.provider, model: local.model })) {
+      yield event;
+    }
+    yield {
+      type: "done",
+      reply,
+      provider: local.provider,
+      model: local.model,
+      warnings: errors,
+    };
+    return;
+  }
+
   if (externalAiConfigured) {
+    if (allowLocalFallback) {
+      const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
+      const reply = makeReplyNonRepeating(local.reply, safeMessages, normalizedMode);
+      yield { type: "meta", provider: local.provider, model: local.model };
+      for await (const event of streamLocalReplyChunks({ reply, provider: local.provider, model: local.model })) {
+        yield event;
+      }
+      yield {
+        type: "done",
+        reply,
+        provider: local.provider,
+        model: local.model,
+        warnings: errors,
+      };
+      return;
+    }
+
     throw new Error(
       errors.length
         ? `External AI stream failed. ${errors.join(" | ")}`
@@ -599,8 +822,8 @@ export const streamAiReply = async function* ({ mode, topic, difficulty, message
   const local = callLocalCoach({ messages: safeMessages, mode: normalizedMode, topic, difficulty });
   const reply = makeReplyNonRepeating(local.reply, safeMessages, normalizedMode);
   yield { type: "meta", provider: local.provider, model: local.model };
-  for (const part of reply.split(/(\s+)/).filter(Boolean)) {
-    yield { type: "delta", content: part, provider: local.provider, model: local.model };
+  for await (const event of streamLocalReplyChunks({ reply, provider: local.provider, model: local.model })) {
+    yield event;
   }
   yield {
     type: "done",
