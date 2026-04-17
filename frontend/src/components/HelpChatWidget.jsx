@@ -14,6 +14,7 @@ const quickActions = [
   { label: "Start here", query: "How do I start using this website?" },
   { label: "Practice problems", query: "Where can I solve coding problems?" },
   { label: "AI coach", query: "How do I use the AI coach?" },
+  { label: "Resume checker", query: "How do I use the resume checker?" },
   { label: "Live session", query: "How do I create or join a live session?" },
 ];
 
@@ -23,6 +24,7 @@ const routeGuide = {
   "/dashboard": "You are on the dashboard. This is the control center for creating rooms, joining by code, and checking recent sessions.",
   "/problems": "You are on the problems page. Pick a challenge here when you want focused coding practice.",
   "/ai-coach": "You are on the AI Coach page. Use it for mock interviews, explanations, and guided interview prep.",
+  "/resume-checker": "You are on the resume checker page. Paste a resume and job description here to get evidence-based fit feedback and rewrite suggestions.",
 };
 
 const helpDatabase = [
@@ -58,6 +60,13 @@ const helpDatabase = [
     reply: () => ({
       text: "Use AI Coach when you want concept explanations, mock interview questions, live responses, or feedback on how you answer technical prompts.",
       actions: [{ label: "Open AI Coach", to: "/ai-coach" }],
+    }),
+  },
+  {
+    patterns: ["resume", "cv", "ats", "job description", "tailor resume"],
+    reply: () => ({
+      text: "Use Resume Checker to compare a pasted resume against a job description. It highlights strong matches, missing evidence, risk flags, and rewrite suggestions.",
+      actions: [{ label: "Open Resume Checker", to: "/resume-checker" }],
     }),
   },
   {
@@ -105,7 +114,7 @@ function buildAssistantReply(rawInput, pathname, isSignedIn) {
   }
 
   return {
-    text: `${getContextHint(pathname)} Try asking about problems, AI Coach, services, dashboard, or live sessions.`,
+    text: `${getContextHint(pathname)} Try asking about problems, AI Coach, resume checking, services, dashboard, or live sessions.`,
     actions: [
       { label: "Services", to: "/services" },
       ...(isSignedIn ? [{ label: "Dashboard", to: "/dashboard" }] : []),
@@ -161,6 +170,7 @@ function HelpChatWidget() {
   const placeholder = useMemo(() => {
     if (location.pathname.startsWith("/session/")) return "Ask how sessions work...";
     if (location.pathname === "/ai-coach") return "Ask how to use AI Coach...";
+    if (location.pathname === "/resume-checker") return "Ask how to use Resume Checker...";
     return "Ask where to go or how to use the site...";
   }, [location.pathname]);
 

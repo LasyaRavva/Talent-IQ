@@ -82,6 +82,8 @@ ollama serve
 
 With `AI_PROVIDER=ollama`, the AI coach and interview features stream from your local model instead of OpenAI or Gemini.
 
+For voice input in an Ollama-only setup, use Chrome or Edge so browser speech recognition can fill the text box directly. OpenAI is optional and only needed if you want server-side recorded audio transcription.
+
 ### AI Video Avatar With Simli
 
 To add a real AI video avatar without changing the human Stream call, configure these backend variables:

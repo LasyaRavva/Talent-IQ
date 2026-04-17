@@ -10,6 +10,7 @@ import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
 import AiCoachPage from "./pages/AiCoachPage";
+import ResumeCheckerPage from "./pages/ResumeCheckerPage";
 import ServicesPage from "./pages/ServicesPage";
 import HelpChatWidget from "./components/HelpChatWidget";
 import { setAuthTokenGetter, setAuthUserGetter } from "./lib/axios";
@@ -99,6 +100,14 @@ function App() {
           element={
             <RequireAuth isSignedIn={isSignedIn}>
               <AiCoachPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/resume-checker"
+          element={
+            <RequireAuth isSignedIn={isSignedIn}>
+              <ResumeCheckerPage />
             </RequireAuth>
           }
         />

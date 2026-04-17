@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { BookOpenIcon, BotIcon, BriefcaseBusinessIcon, LayoutDashboardIcon, SparklesIcon } from "lucide-react";
+import { BookOpenIcon, BotIcon, BriefcaseBusinessIcon, FileSearchIcon, LayoutDashboardIcon, SparklesIcon } from "lucide-react";
 import { UserButton } from "@clerk/clerk-react";
 
 function Navbar() {
@@ -77,6 +77,22 @@ function Navbar() {
             <div className="flex items-center gap-x-2.5">
               <BotIcon className="size-4" />
               <span className="font-medium hidden sm:inline">AI Coach</span>
+            </div>
+          </Link>
+
+          <Link
+            to={"/resume-checker"}
+            className={`px-4 py-2.5 rounded-lg transition-all duration-200 
+              ${
+                isActive("/resume-checker")
+                  ? "bg-primary text-primary-content"
+                  : "hover:bg-base-200 text-base-content/70 hover:text-base-content"
+              }
+              `}
+          >
+            <div className="flex items-center gap-x-2.5">
+              <FileSearchIcon className="size-4" />
+              <span className="font-medium hidden sm:inline">Resume</span>
             </div>
           </Link>
 

@@ -5,6 +5,9 @@ const DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
 const DEFAULT_GEMINI_MODEL = "gemini-2.0-flash";
 const DEFAULT_OLLAMA_BASE_URL = "http://127.0.0.1:11434";
 const DEFAULT_OLLAMA_MODEL = "llama3.1:8b";
+const MAX_MESSAGE_CHARS = 12000;
+
+const resolveTemperature = (mode) => (mode === "resume" ? 0.55 : 0.7);
 
 const resolveGeminiModel = (requestedModel) => {
   const model = (requestedModel || DEFAULT_GEMINI_MODEL).trim();
@@ -37,6 +40,30 @@ const buildSystemPrompt = (mode, topic, difficulty) => {
       .join(" ");
   }
 
+  if (mode === "resume") {
+    return [
+      "You are a careful resume reviewer and job-fit analyst.",
+      "Be conservative, accurate, and evidence-based.",
+      "Only make claims supported by the provided resume text and job description.",
+      "If something is missing or unclear, say it is missing or unclear instead of guessing.",
+      "Do not promise interview outcomes, hiring outcomes, or ATS certainty.",
+      "Do not invent experience, tools, metrics, employers, dates, certifications, or projects.",
+      "Evaluate alignment between the resume and the job description.",
+      "Prefer practical improvements that the candidate can apply immediately.",
+      "Prioritize feedback on representation: headline, summary, section order, bullet clarity, measurable proof, keyword coverage, readability, and formatting risks.",
+      "Do not repeat large chunks of the resume back to the user.",
+      "Keep the response practical and fairly detailed, but avoid unnecessary filler.",
+      "Return structured output with these headings exactly: Match Score, Strong Matches, Gaps, Risk Flags, Rewrite Suggestions, Verdict.",
+      "Under Match Score, give a score from 0 to 100 and one short justification sentence.",
+      "Under Strong Matches, list 4 to 6 concise evidence-backed bullets from the resume that align with the job description.",
+      "Under Gaps, list 4 to 6 missing or weakly-supported requirements and state when evidence is absent.",
+      "Under Risk Flags, list 3 to 4 items about misleading wording, unsupported claims, vague impact statements, weak presentation choices, or formatting/content concerns.",
+      "Under Rewrite Suggestions, provide 4 to 5 improved bullet points, summary lines, or presentation changes tailored to the role.",
+      "Under Verdict, provide a balanced conclusion in 3 short sentences with one caution sentence about verifying claims before applying.",
+      "Keep the tone candid, useful, and non-alarmist.",
+    ].join(" ");
+  }
+
   return [
     "You are an AI teaching assistant for coding interview preparation.",
     "Coach mode is teaching mode, not interview mode.",
@@ -59,7 +86,7 @@ const sanitizeMessages = (messages) => {
     .filter((m) => m && typeof m.content === "string")
     .map((m) => ({
       role: m.role === "assistant" ? "assistant" : "user",
-      content: m.content.trim().slice(0, 3000),
+      content: m.content.trim().slice(0, MAX_MESSAGE_CHARS),
     }))
     .filter((m) => m.content.length > 0)
     .slice(-20);
@@ -145,7 +172,73 @@ const buildNextInterviewQuestion = (topic, difficulty) => {
   return `Next Question:\nFor a ${level} interview in ${focus}, explain how you would solve a typical problem, justify your approach, and mention one edge case you would test.`;
 };
 
+const splitResumePayload = (message = "") => {
+  const resumeMatch = message.match(/Resume:\s*([\s\S]*?)\n\s*Job Description:/i);
+  const jobMatch = message.match(/Job Description:\s*([\s\S]*)$/i);
+  return {
+    resumeText: resumeMatch?.[1]?.trim?.() || "",
+    jobDescription: jobMatch?.[1]?.trim?.() || "",
+  };
+};
+
+const tokenizeKeywords = (text = "") =>
+  Array.from(
+    new Set(
+      (text.toLowerCase().match(/[a-z][a-z0-9.+#-]{2,}/g) || []).filter(
+        (token) => !["with", "from", "that", "this", "have", "your", "about", "into", "using"].includes(token)
+      )
+    )
+  );
+
+const buildLocalResumeReview = ({ messages, topic }) => {
+  const lastUserMessage = getLastUserMessage(messages);
+  const { resumeText, jobDescription } = splitResumePayload(lastUserMessage);
+  const resumeKeywords = tokenizeKeywords(resumeText);
+  const jobKeywords = tokenizeKeywords(jobDescription);
+  const overlap = jobKeywords.filter((keyword) => resumeKeywords.includes(keyword));
+  const missing = jobKeywords.filter((keyword) => !resumeKeywords.includes(keyword));
+  const score = jobKeywords.length ? Math.min(100, Math.round((overlap.length / jobKeywords.length) * 100)) : 0;
+  const conciseOverlap = overlap.slice(0, 6);
+  const conciseMissing = missing.slice(0, 6);
+
+  return {
+    reply: [
+      "Match Score:",
+      `${score}/100. Local fallback review based on keyword overlap and resume structure clues.`,
+      "",
+      "Strong Matches:",
+      conciseOverlap.length
+        ? conciseOverlap.map((item) => `- Resume shows evidence or keywords related to ${item}.`).join("\n")
+        : "- Strong evidence could not be confirmed from the uploaded resume in local mode.",
+      "",
+      "Gaps:",
+      conciseMissing.length
+        ? conciseMissing.map((item) => `- ${item} is requested in the job description but not clearly supported in the resume.`).join("\n")
+        : "- No major keyword gaps were obvious in local mode, but claims should still be verified manually.",
+      "",
+      "Risk Flags:",
+      "- Check whether bullet points show measurable outcomes instead of task-only wording.",
+      "- Make sure the summary, skills, and experience sections are aligned to the target role.",
+      "- Remove vague claims that are not backed by tools, projects, or results.",
+      "",
+      "Rewrite Suggestions:",
+      `- Start the summary with a sharper role headline${topic ? ` for ${topic}` : ""} and 2 to 3 concrete strengths.`,
+      "- Rewrite weak bullets to follow action + tool + outcome where possible.",
+      "- Move the most relevant projects or experience higher if they match the job description closely.",
+      "",
+      "Verdict:",
+      "The resume appears directionally relevant, but stronger proof, clearer prioritization, and tighter wording would improve representation. Verify every claim before applying.",
+    ].join("\n"),
+    model: "local-fallback",
+    provider: "local",
+  };
+};
+
 const callLocalCoach = ({ messages, mode, topic, difficulty }) => {
+  if (mode === "resume") {
+    return buildLocalResumeReview({ messages, topic });
+  }
+
   const lastUserMessage = getLastUserMessage(messages);
   const assistantMessages = getAssistantMessages(messages);
   const header =
@@ -249,7 +342,7 @@ const makeReplyNonRepeating = (reply, messages, mode) => {
   return `${reply}${suffix}`;
 };
 
-const callOpenAI = async ({ messages, systemPrompt, signal }) => {
+const callOpenAI = async ({ messages, systemPrompt, signal, mode }) => {
   const apiKey = ENV.OPENAI_API_KEY;
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -258,7 +351,7 @@ const callOpenAI = async ({ messages, systemPrompt, signal }) => {
 
   const payload = {
     model,
-    temperature: 0.7,
+    temperature: resolveTemperature(mode),
     messages: [{ role: "system", content: systemPrompt }, ...messages],
   };
 
@@ -283,7 +376,7 @@ const callOpenAI = async ({ messages, systemPrompt, signal }) => {
   return { reply, model, provider: "openai" };
 };
 
-const streamOpenAI = async function* ({ messages, systemPrompt, signal }) {
+const streamOpenAI = async function* ({ messages, systemPrompt, signal, mode }) {
   const apiKey = ENV.OPENAI_API_KEY;
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
@@ -292,7 +385,7 @@ const streamOpenAI = async function* ({ messages, systemPrompt, signal }) {
 
   const payload = {
     model,
-    temperature: 0.7,
+    temperature: resolveTemperature(mode),
     stream: true,
     messages: [{ role: "system", content: systemPrompt }, ...messages],
   };
@@ -376,7 +469,7 @@ const toGeminiContents = (messages) => {
   }));
 };
 
-const callGemini = async ({ messages, systemPrompt, signal }) => {
+const callGemini = async ({ messages, systemPrompt, signal, mode }) => {
   const apiKey = ENV.GEMINI_API_KEY;
   if (!apiKey) throw new Error("Missing GEMINI_API_KEY");
 
@@ -387,7 +480,7 @@ const callGemini = async ({ messages, systemPrompt, signal }) => {
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents: toGeminiContents(messages),
     generationConfig: {
-      temperature: 0.7,
+      temperature: resolveTemperature(mode),
       maxOutputTokens: 700,
     },
   };
@@ -410,7 +503,7 @@ const callGemini = async ({ messages, systemPrompt, signal }) => {
   return { reply, model, provider: "gemini" };
 };
 
-const callOllama = async ({ messages, systemPrompt, signal }) => {
+const callOllama = async ({ messages, systemPrompt, signal, mode }) => {
   const baseUrl = (ENV.OLLAMA_BASE_URL || DEFAULT_OLLAMA_BASE_URL).replace(/\/$/, "");
   const model = ENV.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL;
 
@@ -421,6 +514,7 @@ const callOllama = async ({ messages, systemPrompt, signal }) => {
     body: JSON.stringify({
       model,
       stream: false,
+      temperature: resolveTemperature(mode),
       messages: [{ role: "system", content: systemPrompt }, ...messages],
     }),
   });
@@ -440,7 +534,7 @@ const callOllama = async ({ messages, systemPrompt, signal }) => {
   return { reply, model, provider: "ollama" };
 };
 
-const streamGemini = async function* ({ messages, systemPrompt, signal }) {
+const streamGemini = async function* ({ messages, systemPrompt, signal, mode }) {
   const apiKey = ENV.GEMINI_API_KEY;
   if (!apiKey) throw new Error("Missing GEMINI_API_KEY");
 
@@ -451,7 +545,7 @@ const streamGemini = async function* ({ messages, systemPrompt, signal }) {
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents: toGeminiContents(messages),
     generationConfig: {
-      temperature: 0.7,
+      temperature: resolveTemperature(mode),
       maxOutputTokens: 700,
     },
   };
@@ -530,7 +624,7 @@ const streamGemini = async function* ({ messages, systemPrompt, signal }) {
   yield { type: "done", reply: assembled, provider: "gemini", model };
 };
 
-const streamOllama = async function* ({ messages, systemPrompt, signal }) {
+const streamOllama = async function* ({ messages, systemPrompt, signal, mode }) {
   const baseUrl = (ENV.OLLAMA_BASE_URL || DEFAULT_OLLAMA_BASE_URL).replace(/\/$/, "");
   const model = ENV.OLLAMA_MODEL || DEFAULT_OLLAMA_MODEL;
 
@@ -541,6 +635,7 @@ const streamOllama = async function* ({ messages, systemPrompt, signal }) {
     body: JSON.stringify({
       model,
       stream: true,
+      temperature: resolveTemperature(mode),
       messages: [{ role: "system", content: systemPrompt }, ...messages],
     }),
   });
@@ -608,7 +703,7 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages, allow
   const safeMessages = sanitizeMessages(messages);
   if (!safeMessages.length) throw new Error("At least one user message is required");
 
-  const normalizedMode = mode === "interview" ? "interview" : "coach";
+  const normalizedMode = mode === "interview" ? "interview" : mode === "resume" ? "resume" : "coach";
   const systemPrompt = buildSystemPrompt(normalizedMode, topic, difficulty);
   const preferredProvider = (ENV.AI_PROVIDER || (hasOllamaConfigured() ? "ollama" : "gemini")).toLowerCase();
   const externalAiConfigured = hasExternalAiConfigured();
@@ -633,7 +728,7 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages, allow
   for (const provider of attempts) {
     try {
       if (provider === "ollama" && hasOllamaConfigured()) {
-        const result = await callOllama({ messages: safeMessages, systemPrompt, signal });
+        const result = await callOllama({ messages: safeMessages, systemPrompt, signal, mode: normalizedMode });
         return {
           ...result,
           reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
@@ -641,7 +736,7 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages, allow
       }
 
       if (provider === "gemini" && hasUsableGeminiKey()) {
-        const result = await callGemini({ messages: safeMessages, systemPrompt, signal });
+        const result = await callGemini({ messages: safeMessages, systemPrompt, signal, mode: normalizedMode });
         return {
           ...result,
           reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
@@ -649,7 +744,7 @@ export const generateAiReply = async ({ mode, topic, difficulty, messages, allow
       }
 
       if (provider === "openai" && hasUsableOpenAiKey()) {
-        const result = await callOpenAI({ messages: safeMessages, systemPrompt, signal });
+        const result = await callOpenAI({ messages: safeMessages, systemPrompt, signal, mode: normalizedMode });
         return {
           ...result,
           reply: makeReplyNonRepeating(result.reply, safeMessages, normalizedMode),
@@ -704,7 +799,7 @@ export const streamAiReply = async function* ({ mode, topic, difficulty, message
   const safeMessages = sanitizeMessages(messages);
   if (!safeMessages.length) throw new Error("At least one user message is required");
 
-  const normalizedMode = mode === "interview" ? "interview" : "coach";
+  const normalizedMode = mode === "interview" ? "interview" : mode === "resume" ? "resume" : "coach";
   const systemPrompt = buildSystemPrompt(normalizedMode, topic, difficulty);
   const preferredProvider = (ENV.AI_PROVIDER || (hasOllamaConfigured() ? "ollama" : "gemini")).toLowerCase();
   const externalAiConfigured = hasExternalAiConfigured();
@@ -743,7 +838,7 @@ export const streamAiReply = async function* ({ mode, topic, difficulty, message
       if (!streamer) continue;
 
       let finalReply = "";
-      for await (const event of streamer({ messages: safeMessages, systemPrompt, signal })) {
+      for await (const event of streamer({ messages: safeMessages, systemPrompt, signal, mode: normalizedMode })) {
         if (event.type === "done") {
           finalReply = event.reply || finalReply;
           const reply = makeReplyNonRepeating(finalReply, safeMessages, normalizedMode);

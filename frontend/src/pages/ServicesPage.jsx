@@ -7,6 +7,7 @@ import {
   LayoutDashboardIcon,
   MessageSquareCodeIcon,
   MonitorPlayIcon,
+  ScanSearchIcon,
   SparklesIcon,
   UsersIcon,
   VideoIcon,
@@ -56,6 +57,13 @@ const services = [
       "Turn answers into feedback with coaching prompts, structured improvement notes, and conversational follow-ups that keep practice actionable.",
     icon: MessageSquareCodeIcon,
     accent: "from-[#fb7185] via-[#f97316] to-[#facc15]",
+  },
+  {
+    title: "Resume Checker",
+    description:
+      "Compare your resume against a job description in real time, identify evidence-backed strengths and gaps, and generate safer rewrite suggestions without inventing experience.",
+    icon: ScanSearchIcon,
+    accent: "from-[#38bdf8] via-[#14b8a6] to-[#22c55e]",
   },
 ];
 
@@ -157,6 +165,15 @@ function ServicesPage() {
                 See AI Experience
                 <MonitorPlayIcon className="size-4" />
               </Link>
+              {isSignedIn ? (
+                <Link
+                  to="/resume-checker"
+                  className="inline-flex items-center gap-2 rounded-full border border-cyan-300/18 bg-cyan-400/10 px-6 py-3.5 text-sm font-semibold text-cyan-50 transition-colors duration-300 hover:bg-cyan-400/16"
+                >
+                  Try Resume Checker
+                  <ScanSearchIcon className="size-4" />
+                </Link>
+              ) : null}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
