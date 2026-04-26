@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="950" viewBox="0 0 1400 950" role="img" aria-labelledby="title desc">
+  <title id="title">AI Coach SDLC Representation</title>
+  <desc id="desc">An SDLC style representation of the AI Coach module in the Talent IQ project.</desc>
+  <rect width="1400" height="950" rx="28" fill="#eff6ff"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#1e3a8a">AI Coach Module SDLC Representation</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">Software development life cycle view of the AI coach and interview subsystem</text>
+
+  <rect x="110" y="180" width="1180" height="125" rx="24" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="160" y="230" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">1. Requirement Analysis</text>
+  <text x="160" y="270" font-size="18" font-family="Arial, sans-serif" fill="#475569">Need an authenticated AI assistant that can teach coding concepts, simulate interviews, accept voice input, and provide structured feedback.</text>
+
+  <rect x="110" y="335" width="1180" height="125" rx="24" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="160" y="385" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">2. System Design</text>
+  <text x="160" y="425" font-size="18" font-family="Arial, sans-serif" fill="#475569">Design dual interaction modes, protected routes, prompt separation, streaming API flow, transcript panel, voice toggles, and optional avatar integration.</text>
+
+  <rect x="110" y="490" width="1180" height="125" rx="24" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="160" y="540" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">3. Implementation</text>
+  <text x="160" y="580" font-size="18" font-family="Arial, sans-serif" fill="#475569">React page logic, voice hook, streaming fetch client, Express AI routes, controller functions, provider abstraction, local fallback logic, and configuration-based avatar support.</text>
+
+  <rect x="110" y="645" width="1180" height="125" rx="24" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <text x="160" y="695" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">4. Testing and Validation</text>
+  <text x="160" y="735" font-size="18" font-family="Arial, sans-serif" fill="#475569">Verify protected access, prompt switching, streamed transcript rendering, microphone states, spoken output, fallback behavior, and interview-format consistency.</text>
+
+  <rect x="110" y="800" width="1180" height="95" rx="24" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="160" y="856" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">5. Maintenance and Future Scope</text>
+  <text x="705" y="856" font-size="18" font-family="Arial, sans-serif" fill="#475569">Add analytics, stored transcripts, rubric scoring, company-specific interview sets, and benchmark-based quality evaluation.</text>
+</svg>

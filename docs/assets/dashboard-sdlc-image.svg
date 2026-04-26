@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Dashboard SDLC Image</title>
+  <desc id="desc">An SDLC-style visual explanation of how the dashboard module can be understood in the software development life cycle.</desc>
+  <rect width="1400" height="920" rx="28" fill="#fff7ed"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#7c2d12">Dashboard SDLC Representation</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#9a3412">A clear software-development view of the dashboard module</text>
+
+  <rect x="110" y="180" width="1180" height="120" rx="24" fill="#ffffff" stroke="#fdba74" stroke-width="2"/>
+  <text x="160" y="230" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">1. Requirement Analysis</text>
+  <text x="160" y="268" font-size="18" font-family="Arial, sans-serif" fill="#57534e">Need a protected central page where users can create sessions, join rooms, track live activity, and review past sessions.</text>
+
+  <rect x="110" y="330" width="1180" height="120" rx="24" fill="#ffffff" stroke="#fb923c" stroke-width="2"/>
+  <text x="160" y="380" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">2. System Design</text>
+  <text x="160" y="418" font-size="18" font-family="Arial, sans-serif" fill="#57534e">Design dashboard with welcome section, stats cards, live sessions panel, recent session cards, and modal-driven room creation.</text>
+
+  <rect x="110" y="480" width="1180" height="120" rx="24" fill="#ffffff" stroke="#f97316" stroke-width="2"/>
+  <text x="160" y="530" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">3. Implementation</text>
+  <text x="160" y="568" font-size="18" font-family="Arial, sans-serif" fill="#57534e">React components, Clerk user state, React Query hooks, Axios API calls, Express session routes, and MongoDB session persistence.</text>
+
+  <rect x="110" y="630" width="1180" height="120" rx="24" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+  <text x="160" y="680" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">4. Testing and Validation</text>
+  <text x="160" y="718" font-size="18" font-family="Arial, sans-serif" fill="#57534e">Check loading states, empty-code validation, room creation success, join behavior, occupancy logic, protected access, and rejoin flow.</text>
+
+  <rect x="110" y="780" width="1180" height="90" rx="24" fill="#ffffff" stroke="#c2410c" stroke-width="2"/>
+  <text x="160" y="835" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">5. Maintenance and Future Scope</text>
+  <text x="690" y="835" font-size="18" font-family="Arial, sans-serif" fill="#57534e">Add analytics, filters, recommendations, mentor views, and richer dashboard intelligence.</text>
+</svg>

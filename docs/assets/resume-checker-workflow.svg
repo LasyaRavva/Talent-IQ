@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1260" viewBox="0 0 1400 1260" role="img" aria-labelledby="title desc">
+  <title id="title">Resume Checker Workflow Flowchart</title>
+  <desc id="desc">A flowchart showing the step-by-step workflow of the Talent IQ Resume Checker module.</desc>
+  <rect width="1400" height="1260" rx="28" fill="#f8fafc"/>
+  <text x="700" y="70" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#0f172a">Resume Checker Workflow</text>
+  <text x="700" y="104" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">Flowchart representation of file upload, extraction, preview, AI review, and PDF output</text>
+
+  <rect x="470" y="140" width="460" height="72" rx="20" fill="#2563eb"/>
+  <text x="700" y="186" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">User Opens /resume-checker</text>
+
+  <line x1="700" y1="212" x2="700" y2="255" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,272 690,252 710,252" fill="#334155"/>
+
+  <rect x="420" y="275" width="560" height="94" rx="22" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="700" y="325" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Enter Target Role, Upload DOCX, Paste Job Description</text>
+  <text x="700" y="355" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Frontend prepares protected multipart request</text>
+
+  <line x1="700" y1="369" x2="700" y2="415" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,432 690,412 710,412" fill="#334155"/>
+
+  <polygon points="700,435 930,505 700,575 470,505" fill="#dbeafe" stroke="#60a5fa" stroke-width="3"/>
+  <text x="700" y="500" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Is input valid?</text>
+  <text x="700" y="530" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#1e3a8a">DOCX present, job description long enough, not already running</text>
+
+  <line x1="930" y1="505" x2="1170" y2="505" stroke="#334155" stroke-width="4"/>
+  <polygon points="1187,505 1167,495 1167,515" fill="#334155"/>
+  <text x="1008" y="477" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Yes</text>
+  <rect x="1190" y="445" width="160" height="120" rx="22" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="1270" y="492" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Upload to</text>
+  <text x="1270" y="522" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Backend</text>
+
+  <line x1="470" y1="505" x2="230" y2="505" stroke="#334155" stroke-width="4"/>
+  <polygon points="213,505 233,495 233,515" fill="#334155"/>
+  <text x="360" y="477" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">No</text>
+  <rect x="50" y="445" width="160" height="120" rx="22" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="130" y="495" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">Show Error</text>
+  <text x="130" y="525" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#78350f">Fix input first</text>
+
+  <line x1="1270" y1="565" x2="1270" y2="620" stroke="#334155" stroke-width="4"/>
+  <line x1="700" y1="575" x2="700" y2="620" stroke="#334155" stroke-width="0"/>
+  <polygon points="1270,637 1260,617 1280,617" fill="#334155"/>
+
+  <rect x="1010" y="640" width="520" height="90" rx="22" fill="#ecfeff" stroke="#67e8f9" stroke-width="2" transform="translate(-420 0)"/>
+  <text x="700" y="692" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#0f766e">Validate File Type and Size, Then Extract DOCX Text</text>
+  <text x="700" y="718" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#0f766e">Normalize whitespace, bullets, and line structure</text>
+
+  <line x1="700" y1="730" x2="700" y2="780" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,797 690,777 710,777" fill="#334155"/>
+
+  <rect x="420" y="800" width="560" height="92" rx="22" fill="#dcfce7" stroke="#4ade80" stroke-width="2"/>
+  <text x="700" y="850" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Generate Quick Preview and Section Scores</text>
+  <text x="700" y="878" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#166534">Initial score before full AI review</text>
+
+  <line x1="700" y1="892" x2="700" y2="940" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,957 690,937 710,937" fill="#334155"/>
+
+  <polygon points="700,960 930,1030 700,1100 470,1030" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+  <text x="700" y="1022" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">External AI available?</text>
+  <text x="700" y="1052" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#b45309">Use resume prompt or fallback review</text>
+
+  <line x1="930" y1="1030" x2="1170" y2="1030" stroke="#334155" stroke-width="4"/>
+  <polygon points="1187,1030 1167,1020 1167,1040" fill="#334155"/>
+  <text x="1008" y="1002" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Yes</text>
+  <rect x="1190" y="970" width="160" height="120" rx="22" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="1270" y="1018" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Stream Full</text>
+  <text x="1270" y="1048" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">AI Review</text>
+
+  <line x1="470" y1="1030" x2="230" y2="1030" stroke="#334155" stroke-width="4"/>
+  <polygon points="213,1030 233,1020 233,1040" fill="#334155"/>
+  <text x="360" y="1002" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">No</text>
+  <rect x="50" y="970" width="160" height="120" rx="22" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="130" y="1018" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">Use Local</text>
+  <text x="130" y="1048" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">Fallback</text>
+
+  <line x1="1270" y1="1090" x2="1270" y2="1150" stroke="#334155" stroke-width="4"/>
+  <line x1="130" y1="1090" x2="130" y2="1150" stroke="#334155" stroke-width="4"/>
+  <line x1="130" y1="1150" x2="1270" y2="1150" stroke="#334155" stroke-width="4"/>
+  <line x1="700" y1="1150" x2="700" y2="1170" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,1187 690,1167 710,1167" fill="#334155"/>
+
+  <rect x="390" y="1188" width="620" height="56" rx="20" fill="#1e293b"/>
+  <text x="700" y="1224" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#e2e8f0">Render Review, Mark Complete, Offer PDF Download</text>
+</svg>

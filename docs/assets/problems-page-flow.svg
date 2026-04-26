@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="840" viewBox="0 0 1400 840" role="img" aria-labelledby="title desc">
+  <title id="title">Problems Page Flow</title>
+  <desc id="desc">Flow diagram showing how a user moves from the problems list to the problem workspace and learning feedback.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#f8fafc" />
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+    </marker>
+  </defs>
+
+  <rect width="1400" height="840" fill="url(#bg)" rx="28" />
+  <text x="700" y="58" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#0f172a">
+    Talent IQ Problems Module Flow
+  </text>
+  <text x="700" y="90" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#334155">
+    From problem discovery to guided coding practice
+  </text>
+
+  <rect x="80" y="160" width="250" height="130" rx="24" fill="url(#card)" stroke="#cbd5e1" stroke-width="2" />
+  <text x="205" y="205" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Problem Dataset</text>
+  <text x="205" y="235" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Structured objects with</text>
+  <text x="205" y="258" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">title, difficulty, examples,</text>
+  <text x="205" y="281" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">starter code, and output</text>
+
+  <rect x="420" y="160" width="250" height="130" rx="24" fill="url(#card)" stroke="#93c5fd" stroke-width="2" />
+  <text x="545" y="205" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1e3a8a">Problems List</text>
+  <text x="545" y="235" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Cards show title, category,</text>
+  <text x="545" y="258" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">description, and difficulty</text>
+  <text x="545" y="281" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">for quick selection</text>
+
+  <rect x="760" y="160" width="250" height="130" rx="24" fill="url(#card)" stroke="#fbbf24" stroke-width="2" />
+  <text x="885" y="205" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">Problem Selection</text>
+  <text x="885" y="235" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">User picks a question</text>
+  <text x="885" y="258" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">based on learning goal</text>
+  <text x="885" y="281" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">and difficulty level</text>
+
+  <rect x="1090" y="160" width="230" height="130" rx="24" fill="url(#card)" stroke="#c4b5fd" stroke-width="2" />
+  <text x="1205" y="205" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#5b21b6">Workspace Load</text>
+  <text x="1205" y="235" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Problem page opens with</text>
+  <text x="1205" y="258" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">split-panel learning</text>
+  <text x="1205" y="281" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">environment</text>
+
+  <rect x="170" y="430" width="330" height="180" rx="24" fill="url(#card)" stroke="#22c55e" stroke-width="2" />
+  <text x="335" y="475" text-anchor="middle" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Concept Panel</text>
+  <text x="335" y="510" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Description</text>
+  <text x="335" y="535" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Examples</text>
+  <text x="335" y="560" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Constraints</text>
+  <text x="335" y="585" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Problem switcher</text>
+
+  <rect x="535" y="430" width="330" height="180" rx="24" fill="url(#card)" stroke="#2563eb" stroke-width="2" />
+  <text x="700" y="475" text-anchor="middle" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Coding Panel</text>
+  <text x="700" y="510" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Language selector</text>
+  <text x="700" y="535" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Starter template</text>
+  <text x="700" y="560" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Monaco editor input</text>
+  <text x="700" y="585" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Run code action</text>
+
+  <rect x="900" y="430" width="330" height="180" rx="24" fill="url(#card)" stroke="#ef4444" stroke-width="2" />
+  <text x="1065" y="475" text-anchor="middle" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#b91c1c">Feedback Panel</text>
+  <text x="1065" y="510" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Output view</text>
+  <text x="1065" y="535" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Error handling</text>
+  <text x="1065" y="560" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Pass or fail result</text>
+  <text x="1065" y="585" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Motivational response</text>
+
+  <rect x="460" y="680" width="480" height="90" rx="24" fill="#dbeafe" stroke="#60a5fa" stroke-width="2" />
+  <text x="700" y="717" text-anchor="middle" font-size="25" font-family="Arial, sans-serif" font-weight="700" fill="#1e3a8a">Learning Loop</text>
+  <text x="700" y="747" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#334155">
+    Select -> Understand -> Implement -> Execute -> Review -> Improve
+  </text>
+
+  <line x1="330" y1="225" x2="420" y2="225" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)" />
+  <line x1="670" y1="225" x2="760" y2="225" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)" />
+  <line x1="1010" y1="225" x2="1090" y2="225" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)" />
+
+  <line x1="1205" y1="290" x2="335" y2="430" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+  <line x1="1205" y1="290" x2="700" y2="430" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+  <line x1="1205" y1="290" x2="1065" y2="430" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+
+  <line x1="500" y1="520" x2="535" y2="520" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)" />
+  <line x1="865" y1="520" x2="900" y2="520" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)" />
+
+  <line x1="335" y1="610" x2="540" y2="680" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+  <line x1="700" y1="610" x2="700" y2="680" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+  <line x1="1065" y1="610" x2="860" y2="680" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)" />
+</svg>

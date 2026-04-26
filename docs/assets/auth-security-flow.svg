@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Authentication Security Flow</title>
+  <desc id="desc">Security-oriented flow of route protection, token validation, MongoDB mapping, and business authorization.</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef2f2"/>
+      <stop offset="100%" stop-color="#ffe4e6"/>
+    </linearGradient>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="900" rx="28" fill="url(#bg2)"/>
+  <text x="700" y="60" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#7f1d1d">Talent IQ Authentication Security Flow</text>
+  <text x="700" y="94" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#7f1d1d">Security is applied in layers, not in only one place</text>
+
+  <rect x="110" y="170" width="250" height="115" rx="22" fill="#fff" stroke="#fca5a5" stroke-width="2"/>
+  <text x="235" y="212" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#991b1b">Frontend Route Guard</text>
+  <text x="235" y="242" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">RequireAuth blocks</text>
+  <text x="235" y="265" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">unauthenticated page access</text>
+
+  <rect x="430" y="170" width="250" height="115" rx="22" fill="#fff" stroke="#f87171" stroke-width="2"/>
+  <text x="555" y="212" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#991b1b">Request Identity</text>
+  <text x="555" y="242" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">Token and user headers</text>
+  <text x="555" y="265" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">go with each API call</text>
+
+  <rect x="750" y="170" width="250" height="115" rx="22" fill="#fff" stroke="#ef4444" stroke-width="2"/>
+  <text x="875" y="212" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#991b1b">Backend Middleware</text>
+  <text x="875" y="242" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">protectRoute rejects</text>
+  <text x="875" y="265" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">requests without clerkId</text>
+
+  <rect x="1070" y="170" width="220" height="115" rx="22" fill="#fff" stroke="#fb7185" stroke-width="2"/>
+  <text x="1180" y="212" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#991b1b">401 Response</text>
+  <text x="1180" y="242" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">Unauthorized request</text>
+  <text x="1180" y="265" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">is stopped immediately</text>
+
+  <rect x="250" y="430" width="270" height="130" rx="24" fill="#fff" stroke="#fdba74" stroke-width="2"/>
+  <text x="385" y="478" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">Database Safeguard</text>
+  <text x="385" y="508" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">User is resolved through</text>
+  <text x="385" y="531" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">unique clerkId and unique email</text>
+
+  <rect x="565" y="430" width="270" height="130" rx="24" fill="#fff" stroke="#34d399" stroke-width="2"/>
+  <text x="700" y="478" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Minimal User Storage</text>
+  <text x="700" y="508" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">Only essential profile</text>
+  <text x="700" y="531" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">fields are persisted</text>
+
+  <rect x="880" y="430" width="270" height="130" rx="24" fill="#fff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="1015" y="478" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Business Authorization</text>
+  <text x="1015" y="508" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">Controllers check who</text>
+  <text x="1015" y="531" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#57534e">can join, leave, or end sessions</text>
+
+  <rect x="420" y="680" width="560" height="120" rx="26" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="700" y="726" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">Layered Security Result</text>
+  <text x="700" y="756" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#57534e">Identity verification + route protection + database mapping +</text>
+  <text x="700" y="781" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#57534e">business-rule authorization create a stronger security model</text>
+
+  <line x1="360" y1="227" x2="430" y2="227" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="680" y1="227" x2="750" y2="227" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="1000" y1="227" x2="1070" y2="227" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="875" y1="285" x2="385" y2="430" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="875" y1="285" x2="700" y2="430" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="875" y1="285" x2="1015" y2="430" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="385" y1="560" x2="560" y2="680" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="700" y1="560" x2="700" y2="680" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+  <line x1="1015" y1="560" x2="840" y2="680" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow2)"/>
+</svg>

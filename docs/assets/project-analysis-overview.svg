@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="960" viewBox="0 0 1400 960" role="img" aria-labelledby="title desc">
+  <title id="title">Project Analysis Overview</title>
+  <desc id="desc">An overview image summarizing the module-level analysis of the Talent IQ project.</desc>
+  <rect width="1400" height="960" rx="28" fill="#eef2ff"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#312e81">Talent IQ Project Analysis Overview</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#6366f1">Whole-project result mapping across core modules</text>
+
+  <rect x="70" y="150" width="1260" height="120" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="120" y="205" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#312e81">Integrated Platform Result</text>
+  <text x="120" y="242" font-size="18" font-family="Arial, sans-serif" fill="#475569">Talent IQ combines secure access, coding practice, live collaboration, AI guidance, and resume analysis in one workflow-oriented environment.</text>
+
+  <rect x="90" y="320" width="260" height="220" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="125" y="375" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">Authentication</text>
+  <text x="125" y="415" font-size="17" font-family="Arial, sans-serif" fill="#475569">Protected pages</text>
+  <text x="125" y="445" font-size="17" font-family="Arial, sans-serif" fill="#475569">User identity flow</text>
+  <text x="125" y="475" font-size="17" font-family="Arial, sans-serif" fill="#475569">Secure API access</text>
+
+  <rect x="400" y="320" width="260" height="220" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="445" y="375" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">Dashboard</text>
+  <text x="445" y="415" font-size="17" font-family="Arial, sans-serif" fill="#475569">Create sessions</text>
+  <text x="445" y="445" font-size="17" font-family="Arial, sans-serif" fill="#475569">Join by room code</text>
+  <text x="445" y="475" font-size="17" font-family="Arial, sans-serif" fill="#475569">View activity history</text>
+
+  <rect x="710" y="320" width="260" height="220" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="760" y="375" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">Problems</text>
+  <text x="760" y="415" font-size="17" font-family="Arial, sans-serif" fill="#475569">Problem selection</text>
+  <text x="760" y="445" font-size="17" font-family="Arial, sans-serif" fill="#475569">Code execution</text>
+  <text x="760" y="475" font-size="17" font-family="Arial, sans-serif" fill="#475569">Pass/fail feedback</text>
+
+  <rect x="1020" y="320" width="260" height="220" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="1060" y="375" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">Sessions</text>
+  <text x="1060" y="415" font-size="17" font-family="Arial, sans-serif" fill="#475569">Live collaboration</text>
+  <text x="1060" y="445" font-size="17" font-family="Arial, sans-serif" fill="#475569">Interview realism</text>
+  <text x="1060" y="475" font-size="17" font-family="Arial, sans-serif" fill="#475569">Room workflow</text>
+
+  <rect x="245" y="600" width="330" height="230" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="290" y="655" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">AI Coach and Interview</text>
+  <text x="290" y="695" font-size="17" font-family="Arial, sans-serif" fill="#475569">Coach mode explanation</text>
+  <text x="290" y="725" font-size="17" font-family="Arial, sans-serif" fill="#475569">Mock interview flow</text>
+  <text x="290" y="755" font-size="17" font-family="Arial, sans-serif" fill="#475569">Speech and stream support</text>
+
+  <rect x="825" y="600" width="330" height="230" rx="24" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
+  <text x="875" y="655" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1f2937">Resume Checker</text>
+  <text x="875" y="695" font-size="17" font-family="Arial, sans-serif" fill="#475569">DOCX extraction</text>
+  <text x="875" y="725" font-size="17" font-family="Arial, sans-serif" fill="#475569">Evidence-based review</text>
+  <text x="875" y="755" font-size="17" font-family="Arial, sans-serif" fill="#475569">PDF export</text>
+
+  <line x1="700" y1="270" x2="700" y2="320" stroke="#6366f1" stroke-width="4"/>
+  <line x1="700" y1="540" x2="700" y2="600" stroke="#6366f1" stroke-width="4"/>
+</svg>

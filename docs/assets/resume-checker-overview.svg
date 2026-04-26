@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Resume Checker Overview</title>
+  <desc id="desc">A report style overview image showing the major interface regions of the Talent IQ Resume Checker page.</desc>
+  <rect width="1400" height="920" rx="28" fill="#eff6ff"/>
+  <rect x="40" y="40" width="1320" height="82" rx="20" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="90" y="91" font-size="30" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Talent IQ Resume Checker</text>
+  <text x="1030" y="91" font-size="18" font-family="Arial, sans-serif" fill="#2563eb">Evidence-first resume and job-fit review</text>
+
+  <rect x="60" y="150" width="640" height="730" rx="28" fill="#0f172a"/>
+  <text x="100" y="200" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">Input Panel</text>
+  <text x="100" y="235" font-size="18" font-family="Arial, sans-serif" fill="#cbd5e1">Target role, DOCX upload, and job description entry</text>
+
+  <rect x="100" y="275" width="560" height="72" rx="18" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+  <text x="130" y="320" font-size="21" font-family="Arial, sans-serif" fill="#e0f2fe">Target Role: Frontend Developer</text>
+
+  <rect x="100" y="375" width="560" height="130" rx="22" fill="#111827" stroke="#67e8f9" stroke-dasharray="10 8" stroke-width="2"/>
+  <text x="130" y="425" font-size="22" font-family="Arial, sans-serif" fill="#e0f2fe">Upload DOCX Resume</text>
+  <text x="130" y="458" font-size="17" font-family="Arial, sans-serif" fill="#bae6fd">Reliable text extraction for evidence-based analysis</text>
+  <rect x="470" y="408" width="150" height="42" rx="16" fill="#e0f2fe"/>
+  <text x="508" y="436" font-size="17" font-family="Arial, sans-serif" fill="#0f172a">Choose File</text>
+
+  <rect x="100" y="535" width="560" height="220" rx="22" fill="#111827" stroke="#38bdf8" stroke-width="2"/>
+  <text x="130" y="580" font-size="22" font-family="Arial, sans-serif" fill="#e0f2fe">Job Description</text>
+  <text x="130" y="615" font-size="17" font-family="Arial, sans-serif" fill="#bae6fd">Paste recruiter or company role requirements here</text>
+  <line x1="130" y1="650" x2="610" y2="650" stroke="#334155" stroke-width="2"/>
+  <line x1="130" y1="685" x2="610" y2="685" stroke="#334155" stroke-width="2"/>
+  <line x1="130" y1="720" x2="610" y2="720" stroke="#334155" stroke-width="2"/>
+
+  <rect x="100" y="785" width="220" height="58" rx="20" fill="#34d399"/>
+  <text x="145" y="823" font-size="21" font-family="Arial, sans-serif" font-weight="700" fill="#052e16">Analyze Resume</text>
+  <rect x="340" y="785" width="120" height="58" rx="20" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="376" y="823" font-size="21" font-family="Arial, sans-serif" fill="#e2e8f0">Stop</text>
+
+  <rect x="740" y="150" width="600" height="730" rx="28" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="780" y="200" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">Live Review Panel</text>
+  <text x="780" y="235" font-size="18" font-family="Arial, sans-serif" fill="#475569">Quick preview, streamed AI review, section scores, and PDF export</text>
+
+  <rect x="780" y="275" width="160" height="82" rx="20" fill="#eff6ff"/>
+  <text x="810" y="310" font-size="17" font-family="Arial, sans-serif" fill="#64748b">Provider</text>
+  <text x="810" y="338" font-size="19" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">ollama</text>
+
+  <rect x="960" y="275" width="160" height="82" rx="20" fill="#eff6ff"/>
+  <text x="990" y="310" font-size="17" font-family="Arial, sans-serif" fill="#64748b">Model</text>
+  <text x="990" y="338" font-size="19" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">llama3.1:8b</text>
+
+  <rect x="1140" y="275" width="160" height="82" rx="20" fill="#dcfce7"/>
+  <text x="1170" y="310" font-size="17" font-family="Arial, sans-serif" fill="#166534">Match Score</text>
+  <text x="1170" y="338" font-size="19" font-family="Arial, sans-serif" font-weight="700" fill="#166534">78/100</text>
+
+  <rect x="780" y="390" width="520" height="110" rx="24" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="815" y="435" font-size="20" font-family="Arial, sans-serif" fill="#0f172a">Status: Resume received, scanning text,</text>
+  <text x="815" y="468" font-size="20" font-family="Arial, sans-serif" fill="#0f172a">building preview, then streaming final review</text>
+
+  <rect x="780" y="530" width="520" height="110" rx="24" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+  <text x="815" y="575" font-size="20" font-family="Arial, sans-serif" fill="#14532d">Section Scores</text>
+  <text x="815" y="608" font-size="18" font-family="Arial, sans-serif" fill="#166534">Skills Match | Experience Signals | Keyword Coverage</text>
+
+  <rect x="780" y="670" width="520" height="150" rx="24" fill="#0f172a"/>
+  <text x="815" y="720" font-size="22" font-family="Arial, sans-serif" fill="#e2e8f0">Match Score, Strong Matches, Gaps,</text>
+  <text x="815" y="754" font-size="22" font-family="Arial, sans-serif" fill="#e2e8f0">Risk Flags, Rewrite Suggestions, Verdict</text>
+  <text x="815" y="790" font-size="17" font-family="Arial, sans-serif" fill="#93c5fd">Structured output streams into the review panel</text>
+
+  <rect x="1080" y="835" width="220" height="34" rx="14" fill="#e0f2fe"/>
+  <text x="1130" y="858" font-size="16" font-family="Arial, sans-serif" fill="#0f172a">Download Feedback PDF</text>
+</svg>

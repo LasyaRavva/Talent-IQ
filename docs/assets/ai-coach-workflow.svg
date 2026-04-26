@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1220" viewBox="0 0 1400 1220" role="img" aria-labelledby="title desc">
+  <title id="title">AI Coach Workflow Flowchart</title>
+  <desc id="desc">A flowchart showing how the Talent IQ AI Coach and Interview module works from user input to streamed feedback.</desc>
+  <rect width="1400" height="1220" rx="28" fill="#f8fafc"/>
+  <text x="700" y="70" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#0f172a">AI Coach and Interview Workflow</text>
+  <text x="700" y="104" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">Flowchart representation of the Talent IQ AI interaction pipeline</text>
+
+  <rect x="500" y="140" width="400" height="72" rx="20" fill="#16a34a"/>
+  <text x="700" y="186" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">User Opens /ai-coach</text>
+
+  <line x1="700" y1="212" x2="700" y2="255" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,272 690,252 710,252" fill="#334155"/>
+
+  <rect x="460" y="275" width="480" height="88" rx="22" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="700" y="325" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">Select Mode, Topic, and Difficulty</text>
+  <text x="700" y="352" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Coach mode or Interview mode</text>
+
+  <line x1="700" y1="363" x2="700" y2="410" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,427 690,407 710,407" fill="#334155"/>
+
+  <polygon points="700,430 900,500 700,570 500,500" fill="#dbeafe" stroke="#60a5fa" stroke-width="3"/>
+  <text x="700" y="495" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#1d4ed8">How does user interact?</text>
+  <text x="700" y="525" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#1e3a8a">Type question/answer or use microphone</text>
+
+  <line x1="700" y1="570" x2="700" y2="625" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,642 690,622 710,622" fill="#334155"/>
+
+  <rect x="435" y="645" width="530" height="86" rx="22" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="700" y="695" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">Frontend Builds Protected Streaming Request</text>
+  <text x="700" y="722" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Messages + mode + topic + difficulty + auth headers</text>
+
+  <line x1="700" y1="731" x2="700" y2="780" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,797 690,777 710,777" fill="#334155"/>
+
+  <rect x="420" y="800" width="560" height="90" rx="22" fill="#ecfccb" stroke="#84cc16" stroke-width="2"/>
+  <text x="700" y="850" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#3f6212">Backend Authenticates and Chooses Prompt</text>
+  <text x="700" y="878" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#4d7c0f">Coach prompt for teaching, Interview prompt for structured Q and A</text>
+
+  <line x1="700" y1="890" x2="700" y2="935" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,952 690,932 710,932" fill="#334155"/>
+
+  <polygon points="700,955 930,1025 700,1095 470,1025" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+  <text x="700" y="1018" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">External AI available?</text>
+  <text x="700" y="1048" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#b45309">Use provider or local fallback</text>
+
+  <line x1="930" y1="1025" x2="1170" y2="1025" stroke="#334155" stroke-width="4"/>
+  <polygon points="1187,1025 1167,1015 1167,1035" fill="#334155"/>
+  <text x="1008" y="997" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">Yes</text>
+
+  <rect x="1190" y="965" width="160" height="120" rx="22" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="1270" y="1010" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">Stream AI</text>
+  <text x="1270" y="1040" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">meta, delta, done</text>
+
+  <line x1="470" y1="1025" x2="230" y2="1025" stroke="#334155" stroke-width="4"/>
+  <polygon points="213,1025 233,1015 233,1035" fill="#334155"/>
+  <text x="360" y="997" font-size="18" font-family="Arial, sans-serif" fill="#0f172a">No</text>
+
+  <rect x="50" y="965" width="160" height="120" rx="22" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="130" y="1005" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#92400e">Local Fallback</text>
+  <text x="130" y="1040" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#78350f">Keeps module usable</text>
+
+  <line x1="1270" y1="1085" x2="1270" y2="1140" stroke="#334155" stroke-width="4"/>
+  <line x1="130" y1="1085" x2="130" y2="1140" stroke="#334155" stroke-width="4"/>
+  <line x1="130" y1="1140" x2="1270" y2="1140" stroke="#334155" stroke-width="4"/>
+  <line x1="700" y1="1140" x2="700" y2="1160" stroke="#334155" stroke-width="4"/>
+  <polygon points="700,1177 690,1157 710,1157" fill="#334155"/>
+
+  <rect x="420" y="1088" width="560" height="90" rx="22" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="700" y="1138" text-anchor="middle" font-size="23" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">Frontend Updates Transcript and Speaks Reply</text>
+  <text x="700" y="1165" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#166534">Interview mode also returns feedback and next question</text>
+</svg>

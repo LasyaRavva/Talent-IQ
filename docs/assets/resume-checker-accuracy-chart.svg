@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Resume Checker Prototype Evaluation Chart</title>
+  <desc id="desc">A bar chart representing prototype quality dimensions for the Talent IQ Resume Checker module.</desc>
+  <rect width="1400" height="920" rx="28" fill="#fff7ed"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">Resume Checker Prototype Evaluation Bar Chart</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">Illustrative internal quality view, not a formal benchmark study</text>
+
+  <line x1="190" y1="770" x2="1260" y2="770" stroke="#7c2d12" stroke-width="4"/>
+  <line x1="190" y1="180" x2="190" y2="770" stroke="#7c2d12" stroke-width="4"/>
+
+  <text x="150" y="775" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">0</text>
+  <text x="138" y="655" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">20</text>
+  <text x="138" y="535" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">40</text>
+  <text x="138" y="415" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">60</text>
+  <text x="138" y="295" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">80</text>
+  <text x="128" y="185" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">100</text>
+
+  <line x1="190" y1="650" x2="1260" y2="650" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="190" y1="530" x2="1260" y2="530" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="190" y1="410" x2="1260" y2="410" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="190" y1="290" x2="1260" y2="290" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="190" y1="170" x2="1260" y2="170" stroke="#fed7aa" stroke-width="2"/>
+
+  <rect x="270" y="220" width="180" height="550" rx="18" fill="#f97316"/>
+  <text x="360" y="205" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">91%</text>
+  <text x="360" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Extraction</text>
+  <text x="360" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Reliability</text>
+
+  <rect x="520" y="255" width="180" height="515" rx="18" fill="#fb923c"/>
+  <text x="610" y="240" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">87%</text>
+  <text x="610" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Evidence</text>
+  <text x="610" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Alignment</text>
+
+  <rect x="770" y="315" width="180" height="455" rx="18" fill="#fdba74"/>
+  <text x="860" y="300" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">76%</text>
+  <text x="860" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Keyword Coverage</text>
+  <text x="860" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Usefulness</text>
+
+  <rect x="1020" y="240" width="180" height="530" rx="18" fill="#ea580c"/>
+  <text x="1110" y="225" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">89%</text>
+  <text x="1110" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Output</text>
+  <text x="1110" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Stability</text>
+
+  <rect x="220" y="120" width="960" height="34" rx="12" fill="#ffffff" stroke="#fdba74" stroke-width="2"/>
+  <text x="700" y="143" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#7c2d12">Interpretation: prototype quality dimensions based on current workflow behavior, guardrails, and internal validation assumptions</text>
+</svg>

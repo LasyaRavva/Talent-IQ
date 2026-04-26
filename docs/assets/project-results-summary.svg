@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Project Results Summary</title>
+  <desc id="desc">A summary image showing the final interpretation of the Talent IQ project results and analysis.</desc>
+  <rect width="1400" height="900" rx="28" fill="#f0fdf4"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">Results Discussion Summary</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">Final interpretation of the project outcome, findings, and future direction</text>
+
+  <rect x="90" y="170" width="1220" height="140" rx="28" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="140" y="228" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Overall Result</text>
+  <text x="140" y="268" font-size="18" font-family="Arial, sans-serif" fill="#475569">Talent IQ successfully combines coding practice, collaboration, AI guidance, mock interviews, and resume review in a secure and coherent full-stack platform.</text>
+
+  <rect x="90" y="350" width="380" height="350" rx="28" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="135" y="405" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Strengths</text>
+  <text x="135" y="450" font-size="18" font-family="Arial, sans-serif" fill="#475569">Integrated workflow design</text>
+  <text x="135" y="485" font-size="18" font-family="Arial, sans-serif" fill="#475569">Strong educational relevance</text>
+  <text x="135" y="520" font-size="18" font-family="Arial, sans-serif" fill="#475569">Responsible AI structure</text>
+  <text x="135" y="555" font-size="18" font-family="Arial, sans-serif" fill="#475569">Useful collaboration support</text>
+  <text x="135" y="590" font-size="18" font-family="Arial, sans-serif" fill="#475569">Practical resume analysis</text>
+
+  <rect x="510" y="350" width="380" height="350" rx="28" fill="#ffffff" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="555" y="405" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Findings</text>
+  <text x="555" y="450" font-size="18" font-family="Arial, sans-serif" fill="#475569">Integration is the project's biggest advantage</text>
+  <text x="555" y="485" font-size="18" font-family="Arial, sans-serif" fill="#475569">Workflow structure improves real usefulness</text>
+  <text x="555" y="520" font-size="18" font-family="Arial, sans-serif" fill="#475569">Prompt constraints improve AI quality</text>
+  <text x="555" y="555" font-size="18" font-family="Arial, sans-serif" fill="#475569">Design constraints improve reliability</text>
+
+  <rect x="930" y="350" width="380" height="350" rx="28" fill="#ffffff" stroke="#fdba74" stroke-width="2"/>
+  <text x="975" y="405" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">Future Scope</text>
+  <text x="975" y="450" font-size="18" font-family="Arial, sans-serif" fill="#475569">Formal benchmark and stress testing</text>
+  <text x="975" y="485" font-size="18" font-family="Arial, sans-serif" fill="#475569">Stored analytics and progress history</text>
+  <text x="975" y="520" font-size="18" font-family="Arial, sans-serif" fill="#475569">Expanded evaluation datasets</text>
+  <text x="975" y="555" font-size="18" font-family="Arial, sans-serif" fill="#475569">Deeper resume layout analysis</text>
+
+  <rect x="300" y="755" width="800" height="82" rx="24" fill="#14532d"/>
+  <text x="700" y="806" text-anchor="middle" font-size="25" font-family="Arial, sans-serif" font-weight="700" fill="#ffffff">Final Conclusion: a strong, coherent, and academically meaningful interview-preparation platform</text>
+</svg>

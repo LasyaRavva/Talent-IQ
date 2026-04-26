@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">MongoDB User Schema Chart</title>
+  <desc id="desc">Schema and chart style representation of the Talent IQ user collection in MongoDB.</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5"/>
+      <stop offset="100%" stop-color="#d1fae5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="920" rx="28" fill="url(#bg3)"/>
+  <text x="700" y="60" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#14532d">MongoDB User Data Chart</text>
+  <text x="700" y="94" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#166534">Talent IQ local user representation stored in the users collection</text>
+
+  <rect x="110" y="160" width="560" height="620" rx="26" fill="#ffffff" stroke="#86efac" stroke-width="2"/>
+  <text x="390" y="205" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#166534">users Collection</text>
+
+  <rect x="160" y="245" width="460" height="470" rx="18" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="390" y="285" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Sample User Document</text>
+  <text x="190" y="335" font-size="20" font-family="Courier New, monospace" fill="#14532d">{</text>
+  <text x="210" y="375" font-size="19" font-family="Courier New, monospace" fill="#14532d">"_id": "661f0d2...c98",</text>
+  <text x="210" y="415" font-size="19" font-family="Courier New, monospace" fill="#14532d">"name": "Talent IQ User",</text>
+  <text x="210" y="455" font-size="19" font-family="Courier New, monospace" fill="#14532d">"email": "user@example.com",</text>
+  <text x="210" y="495" font-size="19" font-family="Courier New, monospace" fill="#14532d">"profileImage": "https://...",</text>
+  <text x="210" y="535" font-size="19" font-family="Courier New, monospace" fill="#14532d">"clerkId": "user_2abcXYZ...",</text>
+  <text x="210" y="575" font-size="19" font-family="Courier New, monospace" fill="#14532d">"createdAt": "2026-04-17T...",</text>
+  <text x="210" y="615" font-size="19" font-family="Courier New, monospace" fill="#14532d">"updatedAt": "2026-04-17T..."</text>
+  <text x="190" y="665" font-size="20" font-family="Courier New, monospace" fill="#14532d">}</text>
+
+  <text x="390" y="740" text-anchor="middle" font-size="17" font-family="Arial, sans-serif" fill="#475569">Unique keys: email, clerkId</text>
+
+  <rect x="760" y="160" width="520" height="300" rx="26" fill="#ffffff" stroke="#6ee7b7" stroke-width="2"/>
+  <text x="1020" y="205" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#166534">Field Importance Chart</text>
+
+  <line x1="840" y1="400" x2="1210" y2="400" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="840" y1="255" x2="840" y2="400" stroke="#94a3b8" stroke-width="2"/>
+
+  <rect x="875" y="300" width="45" height="100" fill="#16a34a"/>
+  <rect x="945" y="270" width="45" height="130" fill="#22c55e"/>
+  <rect x="1015" y="320" width="45" height="80" fill="#4ade80"/>
+  <rect x="1085" y="245" width="45" height="155" fill="#15803d"/>
+  <rect x="1155" y="335" width="45" height="65" fill="#86efac"/>
+
+  <text x="897" y="425" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#334155">name</text>
+  <text x="967" y="425" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#334155">email</text>
+  <text x="1037" y="425" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#334155">image</text>
+  <text x="1107" y="425" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#334155">clerkId</text>
+  <text x="1177" y="425" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#334155">time</text>
+
+  <text x="1020" y="450" text-anchor="middle" font-size="16" font-family="Arial, sans-serif" fill="#475569">Conceptual chart showing functional importance of fields in the app</text>
+
+  <rect x="760" y="510" width="520" height="270" rx="26" fill="#ffffff" stroke="#34d399" stroke-width="2"/>
+  <text x="1020" y="555" text-anchor="middle" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#166534">How MongoDB Uses the User Data</text>
+  <text x="810" y="610" font-size="19" font-family="Arial, sans-serif" fill="#334155">1. `clerkId` connects external auth with local identity</text>
+  <text x="810" y="650" font-size="19" font-family="Arial, sans-serif" fill="#334155">2. `_id` is used internally for MongoDB relations</text>
+  <text x="810" y="690" font-size="19" font-family="Arial, sans-serif" fill="#334155">3. `name` and `profileImage` support UI personalization</text>
+  <text x="810" y="730" font-size="19" font-family="Arial, sans-serif" fill="#334155">4. `email` supports identity completeness and uniqueness</text>
+  <text x="810" y="770" font-size="19" font-family="Arial, sans-serif" fill="#334155">5. timestamps support tracking and record maintenance</text>
+</svg>

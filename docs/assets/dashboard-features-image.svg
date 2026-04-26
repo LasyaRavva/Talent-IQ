@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Dashboard Features Image</title>
+  <desc id="desc">A feature poster for the Talent IQ dashboard showing main dashboard functions in a clean visual format.</desc>
+  <rect width="1400" height="920" rx="28" fill="#f8fafc"/>
+  <text x="700" y="70" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#0f172a">Dashboard Feature Representation</text>
+  <text x="700" y="104" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">Main functions available from the protected dashboard module</text>
+
+  <rect x="90" y="160" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="130" y="215" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Create Session</text>
+  <text x="130" y="255" font-size="18" font-family="Arial, sans-serif" fill="#475569">Allows the user to open a modal,</text>
+  <text x="130" y="285" font-size="18" font-family="Arial, sans-serif" fill="#475569">choose a coding problem,</text>
+  <text x="130" y="315" font-size="18" font-family="Arial, sans-serif" fill="#475569">confirm room summary, and</text>
+  <text x="130" y="345" font-size="18" font-family="Arial, sans-serif" fill="#475569">enter the live session workspace.</text>
+
+  <rect x="510" y="160" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="550" y="215" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Join by Code</text>
+  <text x="550" y="255" font-size="18" font-family="Arial, sans-serif" fill="#475569">Supports direct room entry through</text>
+  <text x="550" y="285" font-size="18" font-family="Arial, sans-serif" fill="#475569">shared invite code. This improves</text>
+  <text x="550" y="315" font-size="18" font-family="Arial, sans-serif" fill="#475569">collaboration by reducing the time</text>
+  <text x="550" y="345" font-size="18" font-family="Arial, sans-serif" fill="#475569">required to reach the session room.</text>
+
+  <rect x="930" y="160" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="970" y="215" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Statistics View</text>
+  <text x="970" y="255" font-size="18" font-family="Arial, sans-serif" fill="#475569">Displays concise metrics such as</text>
+  <text x="970" y="285" font-size="18" font-family="Arial, sans-serif" fill="#475569">active sessions and total sessions,</text>
+  <text x="970" y="315" font-size="18" font-family="Arial, sans-serif" fill="#475569">helping the user understand</text>
+  <text x="970" y="345" font-size="18" font-family="Arial, sans-serif" fill="#475569">platform activity quickly.</text>
+
+  <rect x="90" y="470" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="130" y="525" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Live Sessions Panel</text>
+  <text x="130" y="565" font-size="18" font-family="Arial, sans-serif" fill="#475569">Lists active sessions along with</text>
+  <text x="130" y="595" font-size="18" font-family="Arial, sans-serif" fill="#475569">host name, difficulty, occupancy,</text>
+  <text x="130" y="625" font-size="18" font-family="Arial, sans-serif" fill="#475569">and action buttons like Join</text>
+  <text x="130" y="655" font-size="18" font-family="Arial, sans-serif" fill="#475569">or Rejoin.</text>
+
+  <rect x="510" y="470" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="550" y="525" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Past Sessions</text>
+  <text x="550" y="565" font-size="18" font-family="Arial, sans-serif" fill="#475569">Shows historical session cards</text>
+  <text x="550" y="595" font-size="18" font-family="Arial, sans-serif" fill="#475569">for continuity, reflection, and</text>
+  <text x="550" y="625" font-size="18" font-family="Arial, sans-serif" fill="#475569">long-term engagement tracking</text>
+  <text x="550" y="655" font-size="18" font-family="Arial, sans-serif" fill="#475569">inside the platform.</text>
+
+  <rect x="930" y="470" width="380" height="260" rx="28" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="970" y="525" font-size="26" font-family="Arial, sans-serif" font-weight="700" fill="#1e293b">Protected Workflow</text>
+  <text x="970" y="565" font-size="18" font-family="Arial, sans-serif" fill="#475569">The dashboard is available only</text>
+  <text x="970" y="595" font-size="18" font-family="Arial, sans-serif" fill="#475569">after authentication and acts as</text>
+  <text x="970" y="625" font-size="18" font-family="Arial, sans-serif" fill="#475569">the central navigation point</text>
+  <text x="970" y="655" font-size="18" font-family="Arial, sans-serif" fill="#475569">for user-specific operations.</text>
+</svg>

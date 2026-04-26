@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Manage Account Profile View</title>
+  <desc id="desc">Documentation illustration of the Manage Account profile details page in the authentication module.</desc>
+  <rect width="1400" height="900" rx="28" fill="#f8fafc"/>
+  <rect x="40" y="40" width="320" height="820" rx="24" fill="#f5f5f4" stroke="#d6d3d1" stroke-width="2"/>
+  <text x="95" y="105" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Account</text>
+  <text x="95" y="138" font-size="18" font-family="Arial, sans-serif" fill="#78716c">Manage your account info.</text>
+
+  <rect x="60" y="190" width="270" height="56" rx="12" fill="#e7e5e4"/>
+  <text x="120" y="225" font-size="20" font-family="Arial, sans-serif" font-weight="700" fill="#44403c">Profile</text>
+  <text x="120" y="285" font-size="20" font-family="Arial, sans-serif" fill="#78716c">Security</text>
+
+  <text x="110" y="780" font-size="18" font-family="Arial, sans-serif" fill="#78716c">Secured by Clerk</text>
+  <text x="110" y="830" font-size="18" font-family="Arial, sans-serif" font-weight="700" fill="#f97316">Development mode</text>
+
+  <rect x="360" y="40" width="1000" height="820" rx="24" fill="#ffffff" stroke="#d6d3d1" stroke-width="2"/>
+  <text x="420" y="110" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Profile details</text>
+
+  <line x1="420" y1="155" x2="1290" y2="155" stroke="#e7e5e4" stroke-width="2"/>
+  <line x1="420" y1="305" x2="1290" y2="305" stroke="#e7e5e4" stroke-width="2"/>
+  <line x1="420" y1="505" x2="1290" y2="505" stroke="#e7e5e4" stroke-width="2"/>
+
+  <text x="420" y="240" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Profile</text>
+  <circle cx="760" cy="230" r="40" fill="#0891b2"/>
+  <text x="752" y="242" font-size="34" font-family="Arial, sans-serif" fill="#ffffff">r</text>
+  <text x="820" y="238" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#292524">ravva lasya</text>
+  <text x="1150" y="238" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Update profile</text>
+
+  <text x="420" y="390" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Email addresses</text>
+  <text x="720" y="390" font-size="22" font-family="Arial, sans-serif" fill="#292524">lasyaravva229@gmail.com</text>
+  <rect x="980" y="368" width="85" height="34" rx="10" fill="#f5f5f4" stroke="#d6d3d1"/>
+  <text x="1003" y="391" font-size="18" font-family="Arial, sans-serif" fill="#78716c">Primary</text>
+  <text x="725" y="445" font-size="22" font-family="Arial, sans-serif" fill="#292524">+ Add email address</text>
+
+  <text x="420" y="570" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#292524">Connected accounts</text>
+  <circle cx="730" cy="567" r="14" fill="#ffffff" stroke="#e11d48" stroke-width="4"/>
+  <text x="755" y="575" font-size="22" font-family="Arial, sans-serif" fill="#292524">Google</text>
+  <text x="840" y="575" font-size="22" font-family="Arial, sans-serif" fill="#78716c">• lasyaravva229@gmail.com</text>
+
+  <rect x="1290" y="55" width="50" height="50" rx="12" fill="#fafaf9" stroke="#d6d3d1"/>
+  <text x="1307" y="89" font-size="30" font-family="Arial, sans-serif" fill="#78716c">×</text>
+</svg>

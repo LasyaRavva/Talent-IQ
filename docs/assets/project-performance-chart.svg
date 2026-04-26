@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Project Performance Chart</title>
+  <desc id="desc">A whole-project bar chart summarizing internal evaluation dimensions for the Talent IQ system.</desc>
+  <rect width="1400" height="920" rx="28" fill="#fff7ed"/>
+  <text x="700" y="72" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">Whole Project Performance Analysis Chart</text>
+  <text x="700" y="106" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#7c2d12">Illustrative internal evaluation of project-level performance and maturity</text>
+
+  <line x1="180" y1="770" x2="1260" y2="770" stroke="#7c2d12" stroke-width="4"/>
+  <line x1="180" y1="180" x2="180" y2="770" stroke="#7c2d12" stroke-width="4"/>
+  <line x1="180" y1="650" x2="1260" y2="650" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="180" y1="530" x2="1260" y2="530" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="180" y1="410" x2="1260" y2="410" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="180" y1="290" x2="1260" y2="290" stroke="#fed7aa" stroke-width="2"/>
+  <line x1="180" y1="170" x2="1260" y2="170" stroke="#fed7aa" stroke-width="2"/>
+
+  <rect x="260" y="210" width="170" height="560" rx="18" fill="#ea580c"/>
+  <text x="345" y="195" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">92%</text>
+  <text x="345" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Functional</text>
+  <text x="345" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Completeness</text>
+
+  <rect x="510" y="250" width="170" height="520" rx="18" fill="#f97316"/>
+  <text x="595" y="235" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">86%</text>
+  <text x="595" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Workflow</text>
+  <text x="595" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Continuity</text>
+
+  <rect x="760" y="290" width="170" height="480" rx="18" fill="#fb923c"/>
+  <text x="845" y="275" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">81%</text>
+  <text x="845" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">AI</text>
+  <text x="845" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Usefulness</text>
+
+  <rect x="1010" y="235" width="170" height="535" rx="18" fill="#fdba74"/>
+  <text x="1095" y="220" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" font-weight="700" fill="#9a3412">89%</text>
+  <text x="1095" y="810" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Practical</text>
+  <text x="1095" y="838" text-anchor="middle" font-size="20" font-family="Arial, sans-serif" fill="#7c2d12">Reliability</text>
+</svg>
