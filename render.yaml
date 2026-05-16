@@ -2,6 +2,7 @@ services:
   - type: web
     name: talent-iq
     runtime: node
+    rootDir: .
     buildCommand: npm run build
     startCommand: npm start
     envVars:
