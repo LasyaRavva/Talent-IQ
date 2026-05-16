@@ -7,8 +7,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const envFileCandidates = [
-  path.resolve(__dirname, "../../.env"),
   path.resolve(__dirname, "../../../.env"),
+  path.resolve(__dirname, "../../.env"),
 ];
 
 for (const envPath of envFileCandidates) {
@@ -18,7 +18,6 @@ for (const envPath of envFileCandidates) {
     path: envPath,
     quiet: true,
   });
-  break;
 }
 
 export const ENV = {

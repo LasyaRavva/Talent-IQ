@@ -60,6 +60,57 @@ VITE_API_URL=http://localhost:3000/api
 VITE_STREAM_API_KEY=your_stream_api_key
 ```
 
+## Single-Site Deployment
+
+This repo can be deployed as one website:
+
+- the Express backend serves the built Vite frontend
+- the React app loads from the same domain
+- API routes stay under `/api/*`
+
+### Production env
+
+Set these values for your host:
+
+```bash
+NODE_ENV=production
+PORT=3000
+CLIENT_URL=https://your-domain.com
+DB_URL=your_mongodb_connection_url
+
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+STREAM_API_KEY=your_stream_api_key
+STREAM_API_SECRET=your_stream_api_secret
+
+INNGEST_EVENT_KEY=your_inngest_event_key
+INNGEST_SIGNING_KEY=your_inngest_signing_key
+```
+
+For same-domain deployment, `VITE_API_URL` is optional. If it is omitted during the frontend build, the browser will call the backend on the current site origin automatically.
+
+### Build and start
+
+Run from the repository root:
+
+```bash
+npm run build
+npm start
+```
+
+`npm run build` installs both `backend` and `frontend` dependencies, then builds the frontend into `frontend/dist`. In production, the backend serves that folder directly.
+
+### Deploy target setup
+
+On platforms such as Render, Railway, or a VPS:
+
+- set the project root to this repository root
+- use `npm run build` as the build command
+- use `npm start` as the start command
+- expose the backend port from `PORT`
+- configure your domain in Clerk allowed origins and redirect URLs
+
 ---
 
 ## 🔧 Run the Backend

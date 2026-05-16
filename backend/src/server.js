@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import cors from "cors";
+import { fileURLToPath } from "url";
 import { serve } from "inngest/express";
 import { clerkMiddleware } from "@clerk/express";
 
@@ -15,7 +16,9 @@ import codeRoutes from "./routes/codeRoutes.js";
 
 const app = express();
 
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
 const devOriginRegex = /^http:\/\/localhost:\d+$/;
 const allowedOrigins = [ENV.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"];
 
@@ -58,17 +61,18 @@ app.get("/health", (req, res) => {
 
 // make our app ready for deployment
 if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  app.use(express.static(frontendDistPath));
 
   app.get("/{*any}", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+    res.sendFile(path.join(frontendDistPath, "index.html"));
   });
 }
 
 const startServer = async () => {
   try {
     await connectDB();
-    app.listen(ENV.PORT, () => console.log("Server is running on port:", ENV.PORT));
+    const port = ENV.PORT || 3000;
+    app.listen(port, () => console.log("Server is running on port:", port));
   } catch (error) {
     console.error("💥 Error starting the server", error);
   }
