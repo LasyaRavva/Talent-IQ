@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
@@ -19,6 +20,8 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDistPath = path.resolve(__dirname, "../../frontend/dist");
+const frontendIndexPath = path.join(frontendDistPath, "index.html");
+const hasFrontendBuild = fs.existsSync(frontendIndexPath);
 const devOriginRegex = /^http:\/\/localhost:\d+$/;
 const allowedOrigins = [ENV.CLIENT_URL, "http://localhost:5173", "http://localhost:5174"];
 
@@ -52,6 +55,7 @@ app.get("/api", (req, res) => {
     frontendUrl: ENV.CLIENT_URL,
     apiBaseUrl: "/api",
     healthcheck: "/health",
+    frontendBuildPresent: hasFrontendBuild,
   });
 });
 
@@ -59,12 +63,16 @@ app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and running" });
 });
 
-// make our app ready for deployment
-if (ENV.NODE_ENV === "production") {
+// Serve the built frontend whenever it exists, regardless of host env quirks.
+if (hasFrontendBuild) {
   app.use(express.static(frontendDistPath));
 
   app.get("/{*any}", (req, res) => {
-    res.sendFile(path.join(frontendDistPath, "index.html"));
+    if (req.path.startsWith("/api") || req.path === "/health") {
+      return res.status(404).json({ msg: "Not Found" });
+    }
+
+    res.sendFile(frontendIndexPath);
   });
 }
 
