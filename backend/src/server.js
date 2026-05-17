@@ -46,7 +46,7 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/code", codeRoutes);
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.status(200).json({
     msg: "Talent IQ backend is running",
     frontendUrl: ENV.CLIENT_URL,

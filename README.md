@@ -67,6 +67,7 @@ This repo can be deployed as one website:
 - the Express backend serves the built Vite frontend
 - the React app loads from the same domain
 - API routes stay under `/api/*`
+- backend status is available at `/api` and `/health`
 
 ### Production env
 
