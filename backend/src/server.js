@@ -67,6 +67,10 @@ app.get("/health", (req, res) => {
 if (hasFrontendBuild) {
   app.use(express.static(frontendDistPath));
 
+  app.get("/", (req, res) => {
+    res.sendFile(frontendIndexPath);
+  });
+
   app.get("/{*any}", (req, res) => {
     if (req.path.startsWith("/api") || req.path === "/health") {
       return res.status(404).json({ msg: "Not Found" });
